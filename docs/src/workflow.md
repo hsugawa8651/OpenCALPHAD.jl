@@ -8,48 +8,37 @@ OpenCALPHAD.jl provides two main workflows for thermodynamic calculations:
 2. **Julia DSL Workflow**: Define parameters directly in Julia code
 
 ```
-+---------------------------------------------------------------+
-|                       TDB Workflow                             |
-+---------------------------------------------------------------+
-|                                                               |
-|   agcu.TDB --> read_tdb() --> Database                        |
-|                                  |                            |
-|                             get_phase()                       |
-|                                  |                            |
-|                                  v                            |
-|                                Phase -----+                   |
-|                                            |                  |
-+--------------------------------------------+------------------+
-                                             |
-+--------------------------------------------+------------------+
-|                   Julia DSL Workflow        |                  |
-+--------------------------------------------+------------------+
-|                                            |                  |
-|   Phase("FCC_A1", ...) --> set_G!() --> set_L!()              |
-|                                                               |
-+---------------------------------------------------------------+
-                                  |
-                                  v
-+---------------------------------------------------------------+
-|                  Equilibrium Calculation                       |
-+---------------------------------------------------------------+
-|                                                               |
-|   find_miscibility_gap() --> MiscibilityGapResult             |
-|   map_phase_diagram()    --> PhaseDiagramResult               |
-|   step_temperature()     --> StepResult                       |
-|                                                               |
-+---------------------------------------------------------------+
-                                  |
-                                  v
-+---------------------------------------------------------------+
-|                    Analysis / Output                           |
-+---------------------------------------------------------------+
-|                                                               |
-|   plot()              --> Phase diagram visualization          |
-|   ForwardDiff         --> Parameter optimization              |
-|   chemical_potential  --> Phase-field coupling                 |
-|                                                               |
-+---------------------------------------------------------------+
++---------------------------------------------------+
+| TDB Workflow                                      |
+|---------------------------------------------------|
+| agcu.TDB --> read_tdb() --> get_phase() --> Phase |
++---------------------------------------------------+
+                        |
+                        v
++---------------------------------------------------+
+| Julia DSL Workflow                                |
+|---------------------------------------------------|
+| Phase("FCC_A1",...) --> set_G!() --> set_L!()     |
+| (produces a Phase object, no TDB file needed)     |
++---------------------------------------------------+
+                        |
+                        v
++---------------------------------------------------+
+| Equilibrium Calculation                           |
+|---------------------------------------------------|
+| find_miscibility_gap() --> MiscibilityGapResult   |
+| map_phase_diagram()    --> PhaseDiagramResult     |
+| step_temperature()     --> StepResult             |
++---------------------------------------------------+
+                        |
+                        v
++---------------------------------------------------+
+| Analysis / Output                                 |
+|---------------------------------------------------|
+| plot()              --> Phase diagram             |
+| ForwardDiff         --> Parameter optimization    |
+| chemical_potential  --> Phase-field coupling      |
++---------------------------------------------------+
 ```
 
 ## Basic Workflow (TDB)
