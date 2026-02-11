@@ -52,7 +52,7 @@ OpenCALPHAD.jl provides two main workflows for thermodynamic calculations:
 
 ### Example: Ag-Cu Phase Diagram
 
-See also: [`examples/plot_phase_diagram.jl`](https://github.com/hsugawa8651/OpenCALPHAD.jl/blob/main/examples/plot_phase_diagram.jl)
+See also: [`examples/411_phase_diagram_agcu.jl`](https://github.com/hsugawa8651/OpenCALPHAD.jl/blob/main/examples/411_phase_diagram_agcu.jl)
 
 ```julia
 using OpenCALPHAD
@@ -95,7 +95,7 @@ enabling automatic differentiation for parameter optimization.
 
 ### Example: Ag-Cu with Julia DSL
 
-See also: [`examples/plot_phase_diagram_validated.jl`](https://github.com/hsugawa8651/OpenCALPHAD.jl/blob/main/examples/plot_phase_diagram_validated.jl)
+See also: [`examples/911_phase_diagram_validated.jl`](https://github.com/hsugawa8651/OpenCALPHAD.jl/blob/main/examples/911_phase_diagram_validated.jl)
 
 ```julia
 using OpenCALPHAD
@@ -139,7 +139,7 @@ using automatic differentiation through iterative solvers.
 
 ### Example: Fitting Redlich-Kister Parameters
 
-See also: [`examples/parameter_optimization_combined.jl`](https://github.com/hsugawa8651/OpenCALPHAD.jl/blob/main/examples/parameter_optimization_combined.jl)
+See also: [`examples/621_parameter_optimization.jl`](https://github.com/hsugawa8651/OpenCALPHAD.jl/blob/main/examples/621_parameter_optimization.jl)
 
 ```julia
 using OpenCALPHAD
@@ -194,7 +194,7 @@ println("Optimized parameters: ", Optim.minimizer(result))
 The Inden-Hillert-Jarl model for magnetic contributions uses conditional branching
 (ferromagnetic vs. paramagnetic regions). ForwardDiff handles this automatically.
 
-See also: [`examples/magnetic_contribution.jl`](https://github.com/hsugawa8651/OpenCALPHAD.jl/blob/main/examples/magnetic_contribution.jl)
+See also: [`examples/611_magnetic_ihj.jl`](https://github.com/hsugawa8651/OpenCALPHAD.jl/blob/main/examples/611_magnetic_ihj.jl)
 
 ```julia
 function G_magnetic(T, Tc, beta, p)

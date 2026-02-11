@@ -152,7 +152,7 @@ end
 set_G!(bcc_fe, [:FE], T -> ghser_fe(T) + G_magnetic(T, 1043.0, 2.22, 0.4))
 ```
 
-See [`examples/magnetic_contribution.jl`](https://github.com/hsugawa8651/OpenCALPHAD.jl/blob/main/examples/magnetic_contribution.jl)
+See [`examples/611_magnetic_ihj.jl`](https://github.com/hsugawa8651/OpenCALPHAD.jl/blob/main/examples/611_magnetic_ihj.jl)
 
 ### External Library Integration
 
@@ -213,7 +213,7 @@ grad = ForwardDiff.gradient(loss, initial_params)
 result = optimize(loss, loss_grad!, initial_params, BFGS())
 ```
 
-See [`examples/parameter_optimization_combined.jl`](https://github.com/hsugawa8651/OpenCALPHAD.jl/blob/main/examples/parameter_optimization_combined.jl)
+See [`examples/621_parameter_optimization.jl`](https://github.com/hsugawa8651/OpenCALPHAD.jl/blob/main/examples/621_parameter_optimization.jl)
 
 ## API Reference
 
