@@ -25,7 +25,7 @@ Phase diagrams map the thermodynamically stable phases of materials as functions
 
 OpenCALPHAD.jl is a pure Julia port of openCALPHAD [@Sundman2015], an open-source CALPHAD software developed by Bo Sundman, a co-developer of Thermo-Calc and one of the pioneers of computational thermodynamics. The package provides tools for reading thermodynamic databases in TDB format (a widely-used text format originating from Thermo-Calc), calculating Gibbs energies using the Compound Energy Formalism—a standard model for describing the energetics of solid solutions with multiple sublattices—and computing phase equilibria including miscibility gaps in binary systems.
 
-Unlike existing CALPHAD software that relies on Fortran or C backends, OpenCALPHAD.jl is written entirely in Julia, eliminating the need for external binary dependencies and simplifying installation across platforms. The package leverages Julia's automatic differentiation capabilities through ForwardDiff.jl [@Revels2016], enabling accurate and efficient computation of thermodynamic derivatives required for equilibrium calculations.
+Unlike existing CALPHAD software that relies on Fortran or C backends, OpenCALPHAD.jl is written entirely in Julia, eliminating the need for external compiled dependencies and simplifying installation across platforms. The package leverages Julia's automatic differentiation capabilities through ForwardDiff.jl [@Revels2016], enabling accurate and efficient computation of thermodynamic derivatives required for equilibrium calculations.
 
 OpenCALPHAD.jl integrates seamlessly with the Julia ecosystem, including Plots.jl for visualization of phase diagrams and Gibbs energy curves. The implementation has been validated against openCALPHAD (Fortran) v6.100 [@Sundman2015] for binary Ag-Cu system calculations, demonstrating numerical agreement within 0.02% for phase boundaries.
 
@@ -50,7 +50,7 @@ OpenCALPHAD.jl addresses these limitations:
 
 1. **Free and open-source**: Licensed under GPL-3.0, freely available for academic and commercial use.
 
-2. **Pure Julia implementation** [@Bezanson2017]: No compilation required, no external binary dependencies. All code—from TDB parsing to equilibrium solving—is written in Julia, enabling users to inspect and understand any component.
+2. **Pure Julia implementation** [@Bezanson2017]: No compilation required, no external compiled dependencies. All code—from TDB parsing to equilibrium solving—is written in Julia, enabling users to inspect and understand any component.
 
 3. **Automatic differentiation**: ForwardDiff.jl [@Revels2016] computes exact derivatives through arbitrary Julia code, including iterative solvers—unlike symbolic differentiation, which cannot differentiate through iterative algorithms.
 
