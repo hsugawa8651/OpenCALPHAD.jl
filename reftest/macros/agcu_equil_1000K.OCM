@@ -1,0 +1,10 @@
+@$ Ag-Cu equilibrium at T=1000K, x(Cu)=0.3
+@$ Reference test for OpenCALPHAD.jl
+@$ Run: oc6 < agcu_equil_1000K.OCM > agcu_equil_1000K.log
+new Y
+r t ../tdb/agcu.TDB
+ag cu
+set c t=1000 p=1e5 n=1 x(cu)=0.3
+c e
+l r 1
+exit Y

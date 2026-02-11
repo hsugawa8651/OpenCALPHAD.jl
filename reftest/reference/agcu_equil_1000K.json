@@ -1,0 +1,45 @@
+{
+  "metadata": {
+    "generator": "openCALPHAD",
+    "version": "6.100",
+    "platform": "macOS arm64 (Apple Silicon)",
+    "generated": "2026-01-16T20:00:00+09:00",
+    "macro": "macros/agcu_equil_1000K.OCM",
+    "tdb": "tdb/agcu.TDB",
+    "reproduction": "cd reftest && ./generate_reference.sh agcu_equil_1000K"
+  },
+  "conditions": {
+    "T": 1000,
+    "P": 1e5,
+    "N": 1,
+    "x_Cu": 0.3
+  },
+  "results": {
+    "G_total": -53648,
+    "H_total": 21480,
+    "S_total": 75.13,
+    "phases": [
+      {
+        "name": "FCC_A1#1",
+        "status": "stable",
+        "amount": 0.7719,
+        "composition": {"AG": 0.8969, "CU": 0.1031}
+      },
+      {
+        "name": "FCC_A1_AUTO#2",
+        "status": "stable",
+        "amount": 0.2281,
+        "composition": {"CU": 0.9663, "AG": 0.0337}
+      }
+    ],
+    "components": {
+      "AG": {"mole_fraction": 0.7, "mu_over_RT": -6.8174, "activity": 1.0945e-3},
+      "CU": {"mole_fraction": 0.3, "mu_over_RT": -5.6004, "activity": 3.6964e-3}
+    },
+    "convergence": {
+      "iterations": 9,
+      "grid_points": 128,
+      "calc_time_ms": 0.36
+    }
+  }
+}

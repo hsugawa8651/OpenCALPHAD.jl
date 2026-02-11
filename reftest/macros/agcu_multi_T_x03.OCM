@@ -1,0 +1,37 @@
+$ Ag-Cu equilibrium at multiple temperatures, x(Cu)=0.3
+$ Reference test for OpenCALPHAD.jl
+new Y
+r t ../tdb/agcu.TDB
+ag cu
+
+$ T=800K
+set c t=800 p=1e5 n=1 x(cu)=0.3
+c e
+l r 1
+
+$ T=900K
+set c t=900
+c e
+l r 1
+
+$ T=1000K
+set c t=1000
+c e
+l r 1
+
+$ T=1100K
+set c t=1100
+c e
+l r 1
+
+$ T=1200K
+set c t=1200
+c e
+l r 1
+
+$ T=1300K (above miscibility gap)
+set c t=1300
+c e
+l r 1
+
+exit Y
