@@ -11,6 +11,9 @@ deps/usr/
 docs/build/
 docs/site/
 
+# Paper build artifacts
+paper/paper.pdf
+
 # Test artifacts
 /test/Manifest.toml
 
