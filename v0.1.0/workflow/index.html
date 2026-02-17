@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Workflow · OpenCALPHAD.jl</title><meta name="title" content="Workflow · OpenCALPHAD.jl"/><meta property="og:title" content="Workflow · OpenCALPHAD.jl"/><meta property="twitter:title" content="Workflow · OpenCALPHAD.jl"/><meta name="description" content="Documentation for OpenCALPHAD.jl."/><meta property="og:description" content="Documentation for OpenCALPHAD.jl."/><meta property="twitter:description" content="Documentation for OpenCALPHAD.jl."/><script data-outdated-warner src="../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../search_index.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-mocha.css" data-theme-name="catppuccin-mocha"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-macchiato.css" data-theme-name="catppuccin-macchiato"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-frappe.css" data-theme-name="catppuccin-frappe"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/catppuccin-latte.css" data-theme-name="catppuccin-latte"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../">OpenCALPHAD.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../">Home</a></li><li><a class="tocitem" href="../getting_started/">Getting Started</a></li><li class="is-active"><a class="tocitem" href>Workflow</a><ul class="internal"><li><a class="tocitem" href="#Overview"><span>Overview</span></a></li><li><a class="tocitem" href="#Basic-Workflow-(TDB)"><span>Basic Workflow (TDB)</span></a></li><li><a class="tocitem" href="#Julia-DSL-Workflow"><span>Julia DSL Workflow</span></a></li><li><a class="tocitem" href="#Parameter-Optimization-Workflow"><span>Parameter Optimization Workflow</span></a></li><li><a class="tocitem" href="#Magnetic-Contribution-(Advanced)"><span>Magnetic Contribution (Advanced)</span></a></li><li><a class="tocitem" href="#Summary"><span>Summary</span></a></li><li><a class="tocitem" href="#See-Also"><span>See Also</span></a></li></ul></li><li><a class="tocitem" href="../examples/">Examples</a></li><li><a class="tocitem" href="../julia_dsl/">Julia DSL</a></li><li><a class="tocitem" href="../api/">API Reference</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>Workflow</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Workflow</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/hsugawa8651/OpenCALPHAD.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/hsugawa8651/OpenCALPHAD.jl/blob/main/docs/src/workflow.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Workflow"><a class="docs-heading-anchor" href="#Workflow">Workflow</a><a id="Workflow-1"></a><a class="docs-heading-anchor-permalink" href="#Workflow" title="Permalink"></a></h1><h2 id="Overview"><a class="docs-heading-anchor" href="#Overview">Overview</a><a id="Overview-1"></a><a class="docs-heading-anchor-permalink" href="#Overview" title="Permalink"></a></h2><p>OpenCALPHAD.jl provides two main workflows for thermodynamic calculations:</p><ol><li><strong>TDB Workflow</strong>: Load parameters from TDB database files</li><li><strong>Julia DSL Workflow</strong>: Define parameters directly in Julia code</li></ol><pre><code class="nohighlight hljs">+---------------------------------------------------+
+| TDB Workflow                                      |
+|---------------------------------------------------|
+| agcu.TDB --&gt; read_tdb() --&gt; get_phase() --&gt; Phase |
++---------------------------------------------------+
+                        |
+                        v
++---------------------------------------------------+
+| Julia DSL Workflow                                |
+|---------------------------------------------------|
+| Phase(&quot;FCC_A1&quot;,...) --&gt; set_G!() --&gt; set_L!()     |
+| (produces a Phase object, no TDB file needed)     |
++---------------------------------------------------+
+                        |
+                        v
++---------------------------------------------------+
+| Equilibrium Calculation                           |
+|---------------------------------------------------|
+| find_miscibility_gap() --&gt; MiscibilityGapResult   |
+| map_phase_diagram()    --&gt; PhaseDiagramResult     |
+| step_temperature()     --&gt; StepResult             |
++---------------------------------------------------+
+                        |
+                        v
++---------------------------------------------------+
+| Analysis / Output                                 |
+|---------------------------------------------------|
+| plot()              --&gt; Phase diagram             |
+| ForwardDiff         --&gt; Parameter optimization    |
+| chemical_potential  --&gt; Phase-field coupling      |
++---------------------------------------------------+</code></pre><h2 id="Basic-Workflow-(TDB)"><a class="docs-heading-anchor" href="#Basic-Workflow-(TDB)">Basic Workflow (TDB)</a><a id="Basic-Workflow-(TDB)-1"></a><a class="docs-heading-anchor-permalink" href="#Basic-Workflow-(TDB)" title="Permalink"></a></h2><h3 id="Step-by-Step"><a class="docs-heading-anchor" href="#Step-by-Step">Step-by-Step</a><a id="Step-by-Step-1"></a><a class="docs-heading-anchor-permalink" href="#Step-by-Step" title="Permalink"></a></h3><ol><li>Load TDB database with <code>read_tdb()</code></li><li>Get phase with <code>get_phase()</code></li><li>Calculate equilibrium with <code>find_miscibility_gap()</code> or <code>calculate_equilibrium()</code></li><li>Plot results with <code>plot()</code></li></ol><h3 id="Example:-Ag-Cu-Phase-Diagram"><a class="docs-heading-anchor" href="#Example:-Ag-Cu-Phase-Diagram">Example: Ag-Cu Phase Diagram</a><a id="Example:-Ag-Cu-Phase-Diagram-1"></a><a class="docs-heading-anchor-permalink" href="#Example:-Ag-Cu-Phase-Diagram" title="Permalink"></a></h3><p>See also: <a href="https://github.com/hsugawa8651/OpenCALPHAD.jl/blob/main/examples/411_phase_diagram_agcu.jl"><code>examples/411_phase_diagram_agcu.jl</code></a></p><pre><code class="language-julia hljs">using OpenCALPHAD
+using Plots
+
+# 1. Load database
+db = read_tdb(&quot;agcu.TDB&quot;)
+
+# 2. Get phase
+fcc = get_phase(db, &quot;FCC_A1&quot;)
+
+# 3. Calculate phase diagram
+result = map_phase_diagram(fcc, db, 800.0, 1300.0, 25.0)
+
+# 4. Plot
+plot(result)</code></pre><h3 id="Example:-Single-Temperature-Equilibrium"><a class="docs-heading-anchor" href="#Example:-Single-Temperature-Equilibrium">Example: Single Temperature Equilibrium</a><a id="Example:-Single-Temperature-Equilibrium-1"></a><a class="docs-heading-anchor-permalink" href="#Example:-Single-Temperature-Equilibrium" title="Permalink"></a></h3><pre><code class="language-julia hljs"># Find miscibility gap at 1000 K
+gap = find_miscibility_gap(fcc, 1000.0, db)
+
+println(&quot;Ag-rich boundary: x(Ag) = $(gap.x1)&quot;)
+println(&quot;Cu-rich boundary: x(Ag) = $(gap.x2)&quot;)</code></pre><h2 id="Julia-DSL-Workflow"><a class="docs-heading-anchor" href="#Julia-DSL-Workflow">Julia DSL Workflow</a><a id="Julia-DSL-Workflow-1"></a><a class="docs-heading-anchor-permalink" href="#Julia-DSL-Workflow" title="Permalink"></a></h2><p>The Julia DSL allows defining thermodynamic parameters directly as Julia functions, enabling automatic differentiation for parameter optimization.</p><h3 id="Step-by-Step-2"><a class="docs-heading-anchor" href="#Step-by-Step-2">Step-by-Step</a><a class="docs-heading-anchor-permalink" href="#Step-by-Step-2" title="Permalink"></a></h3><ol><li>Create <code>Phase</code> with constituents</li><li>Set Gibbs energy with <code>set_G!()</code></li><li>Set interaction parameters with <code>set_L!()</code></li><li>Calculate equilibrium (no database argument needed)</li></ol><h3 id="Example:-Ag-Cu-with-Julia-DSL"><a class="docs-heading-anchor" href="#Example:-Ag-Cu-with-Julia-DSL">Example: Ag-Cu with Julia DSL</a><a id="Example:-Ag-Cu-with-Julia-DSL-1"></a><a class="docs-heading-anchor-permalink" href="#Example:-Ag-Cu-with-Julia-DSL" title="Permalink"></a></h3><p>See also: <a href="https://github.com/hsugawa8651/OpenCALPHAD.jl/blob/main/examples/911_phase_diagram_validated.jl"><code>examples/911_phase_diagram_validated.jl</code></a></p><pre><code class="language-julia hljs">using OpenCALPHAD
+
+# GHSER functions (from SGTE database)
+function ghser_ag(T)
+    return -7209.512 + 118.200733*T - 23.8463314*T*log(T) -
+           0.001790585*T^2 - 3.98587e-7*T^3 - 12011/T
+end
+
+function ghser_cu(T)
+    return -7770.458 + 130.485403*T - 24.112392*T*log(T) -
+           0.00265684*T^2 + 1.29223e-7*T^3 + 52478/T
+end
+
+# 1. Create phase
+fcc = Phase(&quot;FCC_A1&quot;, [1.0], [[:AG, :CU]])
+
+# 2. Set Gibbs energies
+set_G!(fcc, [:AG], ghser_ag)
+set_G!(fcc, [:CU], ghser_cu)
+
+# 3. Set interaction parameters (Redlich-Kister)
+set_L!(fcc, [:AG, :CU], 0, T -&gt; 33819.09 - 8.1236*T)   # L₀
+set_L!(fcc, [:AG, :CU], 1, T -&gt; -5601.87 + 1.32997*T)  # L₁
+
+# 4. Calculate (no db argument)
+gap = find_miscibility_gap(fcc, 1000.0)</code></pre><h2 id="Parameter-Optimization-Workflow"><a class="docs-heading-anchor" href="#Parameter-Optimization-Workflow">Parameter Optimization Workflow</a><a id="Parameter-Optimization-Workflow-1"></a><a class="docs-heading-anchor-permalink" href="#Parameter-Optimization-Workflow" title="Permalink"></a></h2><p>The Julia DSL enables gradient-based optimization of thermodynamic parameters using automatic differentiation through iterative solvers.</p><h3 id="Step-by-Step-3"><a class="docs-heading-anchor" href="#Step-by-Step-3">Step-by-Step</a><a class="docs-heading-anchor-permalink" href="#Step-by-Step-3" title="Permalink"></a></h3><ol><li>Define phase with <code>set_G!()</code> and <code>set_L!()</code></li><li>Define loss function comparing calculated vs. experimental data</li><li>Optimize with <code>Optim.jl</code> (BFGS or other gradient-based method)</li></ol><h3 id="Example:-Fitting-Redlich-Kister-Parameters"><a class="docs-heading-anchor" href="#Example:-Fitting-Redlich-Kister-Parameters">Example: Fitting Redlich-Kister Parameters</a><a id="Example:-Fitting-Redlich-Kister-Parameters-1"></a><a class="docs-heading-anchor-permalink" href="#Example:-Fitting-Redlich-Kister-Parameters" title="Permalink"></a></h3><p>See also: <a href="https://github.com/hsugawa8651/OpenCALPHAD.jl/blob/main/examples/621_parameter_optimization.jl"><code>examples/621_parameter_optimization.jl</code></a></p><pre><code class="language-julia hljs">using OpenCALPHAD
+using Optim
+using ForwardDiff
+
+# Experimental data: (T, x_low, x_high)
+experimental_data = [
+    (800.0,  0.038, 0.991),
+    (1000.0, 0.103, 0.966),
+    (1200.0, 0.224, 0.905),
+]
+
+# Create phase with parameterized L
+function create_phase(L0_a, L0_b, L1_a, L1_b)
+    fcc = Phase(&quot;FCC_A1&quot;, [1.0], [[:AG, :CU]])
+    set_G!(fcc, [:AG], ghser_ag)
+    set_G!(fcc, [:CU], ghser_cu)
+    set_L!(fcc, [:AG, :CU], 0, T -&gt; L0_a + L0_b * T)
+    set_L!(fcc, [:AG, :CU], 1, T -&gt; L1_a + L1_b * T)
+    return fcc
+end
+
+# Loss function
+function loss(params)
+    L0_a, L0_b, L1_a, L1_b = params
+    fcc = create_phase(L0_a, L0_b, L1_a, L1_b)
+    error = 0.0
+    for (T, x_low, x_high) in experimental_data
+        gap = find_miscibility_gap(fcc, T)
+        if !isnothing(gap)
+            error += (gap.x1 - x_low)^2 + (gap.x2 - x_high)^2
+        end
+    end
+    return error
+end
+
+# Gradient function (ForwardDiff)
+function loss_grad!(G, params)
+    G .= ForwardDiff.gradient(loss, params)
+end
+
+# Optimize
+initial_params = [35000.0, -10.0, -5000.0, 1.0]
+result = optimize(loss, loss_grad!, initial_params, BFGS())
+
+println(&quot;Optimized parameters: &quot;, Optim.minimizer(result))</code></pre><h2 id="Magnetic-Contribution-(Advanced)"><a class="docs-heading-anchor" href="#Magnetic-Contribution-(Advanced)">Magnetic Contribution (Advanced)</a><a id="Magnetic-Contribution-(Advanced)-1"></a><a class="docs-heading-anchor-permalink" href="#Magnetic-Contribution-(Advanced)" title="Permalink"></a></h2><p>The Inden-Hillert-Jarl model for magnetic contributions uses conditional branching (ferromagnetic vs. paramagnetic regions). ForwardDiff handles this automatically.</p><p>See also: <a href="https://github.com/hsugawa8651/OpenCALPHAD.jl/blob/main/examples/611_magnetic_ihj.jl"><code>examples/611_magnetic_ihj.jl</code></a></p><pre><code class="language-julia hljs">function G_magnetic(T, Tc, beta, p)
+    tau = T / Tc
+    if tau &lt; 1  # Ferromagnetic
+        g = 1 - (79/(140*p)*tau^(-1) + ...) / A
+    else        # Paramagnetic
+        g = -(tau^(-5)/10 + ...) / A
+    end
+    return R * T * log(beta + 1) * g
+end
+
+# Use in DSL
+set_G!(bcc_fe, [:FE], T -&gt; ghser_fe(T) + G_magnetic(T, 1043.0, 2.22, 0.4))</code></pre><h2 id="Summary"><a class="docs-heading-anchor" href="#Summary">Summary</a><a id="Summary-1"></a><a class="docs-heading-anchor-permalink" href="#Summary" title="Permalink"></a></h2><table><tr><th style="text-align: right">Workflow</th><th style="text-align: right">Use Case</th><th style="text-align: right">Key Functions</th></tr><tr><td style="text-align: right">TDB</td><td style="text-align: right">Standard calculations</td><td style="text-align: right"><code>read_tdb()</code>, <code>get_phase()</code></td></tr><tr><td style="text-align: right">Julia DSL</td><td style="text-align: right">Custom models, optimization</td><td style="text-align: right"><code>Phase()</code>, <code>set_G!()</code>, <code>set_L!()</code></td></tr><tr><td style="text-align: right">Optimization</td><td style="text-align: right">Parameter fitting</td><td style="text-align: right"><code>ForwardDiff.gradient()</code>, <code>optimize()</code></td></tr></table><h2 id="See-Also"><a class="docs-heading-anchor" href="#See-Also">See Also</a><a id="See-Also-1"></a><a class="docs-heading-anchor-permalink" href="#See-Also" title="Permalink"></a></h2><ul><li><a href="../getting_started/">Getting Started</a> - Installation and basic usage</li><li><a href="../api/">API Reference</a> - Full function documentation</li></ul></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../getting_started/">« Getting Started</a><a class="docs-footer-nextpage" href="../examples/">Examples »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option><option value="catppuccin-latte">catppuccin-latte</option><option value="catppuccin-frappe">catppuccin-frappe</option><option value="catppuccin-macchiato">catppuccin-macchiato</option><option value="catppuccin-mocha">catppuccin-mocha</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.16.1 on <span class="colophon-date" title="Tuesday 17 February 2026 13:01">Tuesday 17 February 2026</span>. Using Julia version 1.12.5.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
