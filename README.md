@@ -1,5 +1,9 @@
 # OpenCALPHAD.jl
 
+[![CI](https://github.com/hsugawa8651/OpenCALPHAD.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/hsugawa8651/OpenCALPHAD.jl/actions/workflows/CI.yml)
+[![Documentation](https://github.com/hsugawa8651/OpenCALPHAD.jl/actions/workflows/Docs.yml/badge.svg)](https://hsugawa8651.github.io/OpenCALPHAD.jl)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18670628.svg)](https://doi.org/10.5281/zenodo.18670628)
+
 A pure Julia port of [OpenCALPHAD](https://github.com/sundmanbo/opencalphad) for CALPHAD (CALculation of PHAse Diagrams) thermodynamic calculations.
 
 **Based on:** OpenCALPHAD (Fortran) commit [`e857325f`](https://github.com/sundmanbo/opencalphad/commit/e857325f5d38e32e41513186ddf1d8ae4b2e0349) (2026-01-01)
