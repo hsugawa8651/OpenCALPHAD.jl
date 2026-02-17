@@ -46,7 +46,7 @@ v0.1 supports **binary (2-component) systems** with the following phase structur
 
 ```julia
 using Pkg
-Pkg.add(url="https://github.com/hsugawa8651/OpenCALPHAD.jl")
+Pkg.add("OpenCALPHAD")
 ```
 
 ## Quick Example
@@ -89,6 +89,16 @@ julia --project run_reftest.jl
 ```
 
 See `reftest/README.md` for details.
+
+## Citation
+
+If you use OpenCALPHAD.jl in your research, please cite both:
+
+**OpenCALPHAD.jl:**
+> Sugawara, H. (2026). OpenCALPHAD.jl: Julia port of openCALPHAD for CALPHAD thermodynamic calculations (Version 0.1.0) [Computer software]. https://doi.org/10.5281/zenodo.18670628
+
+**Original openCALPHAD:**
+> Sundman, B., Kattner, U. R., Palumbo, M., & Fries, S. G. (2015). OpenCalphad - a free thermodynamic software. *Integrating Materials and Manufacturing Innovation*, 4:1. [doi:10.1186/s40192-014-0029-1](https://doi.org/10.1186/s40192-014-0029-1)
 
 ## Contributing
 
