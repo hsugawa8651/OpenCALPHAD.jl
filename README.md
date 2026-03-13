@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/hsugawa8651/OpenCALPHAD.jl/actions/workflows/CI.yml/badge.svg)](https://github.com/hsugawa8651/OpenCALPHAD.jl/actions/workflows/CI.yml)
 [![Documentation](https://github.com/hsugawa8651/OpenCALPHAD.jl/actions/workflows/Docs.yml/badge.svg)](https://hsugawa8651.github.io/OpenCALPHAD.jl)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18670628.svg)](https://doi.org/10.5281/zenodo.18670628)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18670627.svg)](https://doi.org/10.5281/zenodo.18670627)
 
 A pure Julia port of [OpenCALPHAD](https://github.com/sundmanbo/opencalphad) for CALPHAD (CALculation of PHAse Diagrams) thermodynamic calculations.
 
@@ -99,7 +99,7 @@ See `reftest/README.md` for details.
 If you use OpenCALPHAD.jl in your research, please cite both:
 
 **OpenCALPHAD.jl:**
-> Sugawara, H. (2026). OpenCALPHAD.jl: Julia port of openCALPHAD for CALPHAD thermodynamic calculations (Version 0.1.0) [Computer software]. https://doi.org/10.5281/zenodo.18670628
+> Sugawara, H. (2026). OpenCALPHAD.jl: Julia port of openCALPHAD for CALPHAD thermodynamic calculations [Computer software]. https://doi.org/10.5281/zenodo.18670627
 
 **Original openCALPHAD:**
 > Sundman, B., Kattner, U. R., Palumbo, M., & Fries, S. G. (2015). OpenCalphad - a free thermodynamic software. *Integrating Materials and Manufacturing Innovation*, 4:1. [doi:10.1186/s40192-014-0029-1](https://doi.org/10.1186/s40192-014-0029-1)
