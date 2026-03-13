@@ -4,17 +4,24 @@
 # Part of OpenCALPHAD.jl - TDB file parser
 
 """
-    read_tdb(filepath::AbstractString) -> Database
+    read_tdb(filepath) -> Database
 
 Parse a TDB (Thermodynamic Database) file and return a Database object.
 
 # Arguments
 
-  - `filepath`: Path to the TDB file
+  - `filepath::AbstractString`: Path to the TDB file
 
 # Returns
 
   - `Database`: Parsed database containing elements, functions, phases, and parameters
+
+# Examples
+
+```julia
+db = read_tdb(joinpath(pkgdir(OpenCALPHAD), "test", "data", "agcu.TDB"))
+phase = get_phase(db, "FCC_A1")
+```
 """
 function read_tdb(filepath::AbstractString)
     if !isfile(filepath)

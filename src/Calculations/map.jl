@@ -40,7 +40,8 @@ struct PhaseDiagramResult
 end
 
 """
-    map_phase_diagram(phase::Phase, db::Database, T_start, T_stop, T_step; P=1e5, component_indices=(1,2))
+    map_phase_diagram(phase, db, T_start, T_stop, T_step; P=1e5, component_indices=(1,2))
+        -> PhaseDiagramResult
 
 Calculate phase diagram (MAP) by finding phase boundaries over a temperature range.
 
@@ -54,12 +55,20 @@ at each temperature point.
   - `T_start::Real`: Start temperature [K]
   - `T_stop::Real`: Stop temperature [K]
   - `T_step::Real`: Temperature step [K]
-  - `P::Real=1e5`: Pressure [Pa]
-  - `component_indices::Tuple{Int,Int}=(1,2)`: Indices of binary components in first sublattice
+  - `P::Real`: Pressure [Pa]
+  - `component_indices::Tuple{Int,Int}`: Indices of binary components in first sublattice
 
 # Returns
 
   - `PhaseDiagramResult`: Phase boundaries at each temperature
+
+# Examples
+
+```julia
+db = read_tdb(joinpath(pkgdir(OpenCALPHAD), "test", "data", "agcu.TDB"))
+fcc = get_phase(db, "FCC_A1")
+result = map_phase_diagram(fcc, db, 600.0, 1200.0, 25.0)
+```
 """
 function map_phase_diagram(
     phase::Phase,

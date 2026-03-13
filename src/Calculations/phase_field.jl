@@ -4,8 +4,7 @@
 # Part of OpenCALPHAD.jl - Phase Field Integration Utilities
 
 """
-    driving_force(db::Database, T::Real, x::Real, solid_phase::String, liquid_phase::String;
-                  P::Real=1e5) -> Float64
+    driving_force(db, T, x, solid_phase, liquid_phase; P=1e5) -> Float64
 
 Calculate the thermodynamic driving force for solidification.
 
@@ -13,12 +12,12 @@ Calculate the thermodynamic driving force for solidification.
 
 # Arguments
 
-  - `db`: Database containing phase definitions
-  - `T`: Temperature [K]
-  - `x`: Mole fraction of second component (0 to 1)
-  - `solid_phase`: Name of solid phase (e.g., "FCC_A1")
-  - `liquid_phase`: Name of liquid phase (e.g., "LIQUID")
-  - `P`: Pressure [Pa]
+  - `db::Database`: Database containing phase definitions
+  - `T::Real`: Temperature [K]
+  - `x::Real`: Mole fraction of second component (0 to 1)
+  - `solid_phase::String`: Name of solid phase (e.g., "FCC_A1")
+  - `liquid_phase::String`: Name of liquid phase (e.g., "LIQUID")
+  - `P::Real`: Pressure [Pa]
 
 # Returns
 
@@ -52,8 +51,7 @@ function driving_force(
 end
 
 """
-    chemical_potential(phase::Phase, T::Real, x::Real, db::Database;
-                       P::Real=1e5) -> Tuple{Float64, Float64}
+    chemical_potential(phase, T, x, db; P=1e5) -> Tuple{Float64, Float64}
 
 Calculate chemical potentials of both components.
 
@@ -61,11 +59,11 @@ Calculate chemical potentials of both components.
 
 # Arguments
 
-  - `phase`: Phase object
-  - `T`: Temperature [K]
-  - `x`: Mole fraction of second component
-  - `db`: Database
-  - `P`: Pressure [Pa]
+  - `phase::Phase`: Phase object
+  - `T::Real`: Temperature [K]
+  - `x::Real`: Mole fraction of second component
+  - `db::Database`: Database
+  - `P::Real`: Pressure [Pa]
 
 # Returns
 
@@ -133,16 +131,30 @@ function chemical_potential(
 end
 
 """
-    diffusion_potential(phase::Phase, T::Real, x::Real, db::Database;
-                        P::Real=1e5) -> Float64
+    diffusion_potential(phase, T, x, db; P=1e5) -> Float64
 
 Calculate the diffusion potential (second derivative of G).
 
 ∂²G/∂x² - used in Cahn-Hilliard equation for diffusion coefficient.
 
+# Arguments
+
+  - `phase::Phase`: Phase object
+  - `T::Real`: Temperature [K]
+  - `x::Real`: Mole fraction of second component
+  - `db::Database`: Database
+  - `P::Real`: Pressure [Pa]
+
 # Returns
 
   - d²G/dx² [J/mol]
+
+# Example
+
+```julia
+fcc = get_phase(db, "FCC_A1")
+d2G = diffusion_potential(fcc, 1000.0, 0.3, db)
+```
 """
 function diffusion_potential(
     phase::Phase,

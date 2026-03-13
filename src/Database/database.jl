@@ -14,6 +14,13 @@ Container for thermodynamic database information.
   - `functions::Vector{GFunction}`: Gibbs energy functions
   - `phases::Vector{Phase}`: Phase definitions with parameters
   - `source::String`: Source file path or identifier
+
+# Examples
+
+```julia
+db = read_tdb(joinpath(pkgdir(OpenCALPHAD), "test", "data", "agcu.TDB"))
+get_phase(db, "FCC_A1")
+```
 """
 struct Database
     elements::Vector{Element}

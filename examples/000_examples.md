@@ -1,6 +1,6 @@
 # OpenCALPHAD.jl Examples
 
-Last-Modified: 2026-01-25
+Last-Modified: 2026-03-13
 
 ## Numbering System
 
@@ -19,7 +19,7 @@ Last-Modified: 2026-01-25
 | Code | System | TDB File |
 |------|--------|----------|
 | x1 | Ag-Cu | agcu.TDB |
-| x2 | Al-Ni | alni-4slx.TDB (future) |
+| x2 | Cr-Mo / Cr-Fe | steel1.TDB (via component_indices) |
 
 ## File List
 
@@ -28,6 +28,9 @@ Last-Modified: 2026-01-25
 | File | Description |
 |------|-------------|
 | `101_gibbs_energy_agcu.jl` | Gibbs energy curve with common tangent construction |
+| `102_gibbs_energy_crmo.jl` | Cr-Mo from multi-component database (manual y-matrix) |
+| `122_scan_crmo.jl` | Cr-Mo with `component_indices` (high-level API) |
+| `131_julia_dsl_agcu.jl` | Julia DSL basics - define phases without TDB |
 
 ### 2xx: Equilibrium
 
@@ -39,8 +42,10 @@ Last-Modified: 2026-01-25
 
 | File | Description |
 |------|-------------|
-| `311_step_gm_agcu.jl` | G, H_mix, S_mix curves at fixed T (≈ step2.OCM) |
-| `312_two_phase_crfe.jl` | Two-phase equilibrium: BCC gap + liquidus (≈ map2.OCM) |
+| `311_step_gm_agcu.jl` | Ag-Cu STEP calculation with Gm plot |
+| `312_two_phase_crfe.jl` | Cr-Fe two-phase equilibrium |
+| `313_step_twophase_agcu.jl` | Two-phase detection with step_temperature |
+| `322_step_crmo.jl` | Cr-Mo with `component_indices` |
 
 ### 4xx: Phase Diagrams
 
@@ -54,7 +59,6 @@ Last-Modified: 2026-01-25
 |------|-------------|
 | `611_magnetic_ihj.jl` | Inden-Hillert-Jarl magnetic contribution model |
 | `621_parameter_optimization.jl` | Fitting R-K coefficients (+ combined figure for JOSS) |
-| `621_parameter_optimization.ipynb` | Jupyter notebook version |
 | `624_magnetic_optimization.jl` | Optimizing magnetic parameters (Tc, beta) |
 
 ### 9xx: Benchmarks / References
@@ -68,7 +72,12 @@ Last-Modified: 2026-01-25
 
 | File | Description |
 |------|-------------|
-| `411_phase_diagram_agcu.ipynb` | Interactive Jupyter notebook for Ag-Cu phase diagram |
+| `131_julia_dsl_agcu.ipynb` | Julia DSL basics (Jupyter) |
+| `311_step_gm_agcu.ipynb` | STEP calculation (Jupyter) |
+| `313_step_twophase_agcu.ipynb` | Two-phase detection (Jupyter) |
+| `411_phase_diagram_agcu.ipynb` | Ag-Cu phase diagram (Jupyter) |
+| `621_parameter_optimization.ipynb` | Parameter optimization (Jupyter) |
+| `colab_demo_ocpf.ipynb` | Google Colab demo (CALPHAD + Phase Field) |
 
 ## How to Run
 
@@ -87,8 +96,12 @@ julia --project=. -i examples/411_phase_diagram_agcu.jl
 
 Each example generates corresponding PNG files in the `examples/` directory:
 - `101_gibbs_energy_agcu.png`
+- `102_gibbs_energy_crmo.png`
+- `122_scan_crmo.png`
 - `311_step_gm_agcu.png`
 - `312_two_phase_crfe.png`
+- `313_step_twophase_agcu.png`
+- `322_step_crmo.png`
 - `411_phase_diagram_agcu.png`
 - `611_magnetic_ihj.png`
 - `621_parameter_optimization.png`

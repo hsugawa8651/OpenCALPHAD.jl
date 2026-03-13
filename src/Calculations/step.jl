@@ -46,8 +46,8 @@ struct StepResult
 end
 
 """
-    step_temperature(phase::Phase, db::Database, x_overall, T_start, T_stop, T_step;
-                     P=1e5, component_indices=(1,2))
+    step_temperature(phase, db, x_overall, T_start, T_stop, T_step;
+                     P=1e5, component_indices=(1,2)) -> StepResult
 
 Perform STEP calculation over temperature range.
 
@@ -59,8 +59,8 @@ Perform STEP calculation over temperature range.
   - `T_start::Real`: Start temperature [K]
   - `T_stop::Real`: Stop temperature [K]
   - `T_step::Real`: Temperature step [K]
-  - `P::Real=1e5`: Pressure [Pa]
-  - `component_indices::Tuple{Int,Int}=(1,2)`: Component indices in sublattice 1.
+  - `P::Real`: Pressure [Pa]
+  - `component_indices::Tuple{Int,Int}`: Component indices in sublattice 1.
     For multi-component databases (e.g., steel1.TDB), specify the desired components:
     e.g., (1, 3) for Cr-Mo where Cr=1, Mo=3 in BCC_A2.
 

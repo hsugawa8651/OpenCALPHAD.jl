@@ -31,9 +31,8 @@ struct TwoPhaseResult
 end
 
 """
-    find_common_tangent(phase1::Phase, phase2::Phase, T::Real, db::Database;
-                        P::Real=1e5, n_points::Int=101, tol::Float64=1e-6)
-                        -> Union{TwoPhaseResult, Nothing}
+    find_common_tangent(phase1, phase2, T, db; P=1e5, n_points=101, tol=1e-6)
+        -> Union{TwoPhaseResult, Nothing}
 
 Find two-phase equilibrium using common tangent construction.
 
@@ -42,16 +41,24 @@ in both phases.
 
 # Arguments
 
-  - `phase1`, `phase2`: The two phases
-  - `T`: Temperature [K]
-  - `db`: Database
-  - `P`: Pressure [Pa]
-  - `n_points`: Grid points for initial search
-  - `tol`: Tolerance for chemical potential equality
+  - `phase1::Phase`, `phase2::Phase`: The two phases
+  - `T::Real`: Temperature [K]
+  - `db::Database`: Database
+  - `P::Real`: Pressure [Pa]
+  - `n_points::Int`: Grid points for initial search
+  - `tol::Float64`: Tolerance for chemical potential equality
 
 # Returns
 
   - `TwoPhaseResult` if equilibrium found, `nothing` otherwise
+
+# Examples
+
+```julia
+db = read_tdb(joinpath(pkgdir(OpenCALPHAD), "test", "data", "agcu.TDB"))
+fcc = get_phase(db, "FCC_A1")
+result = find_common_tangent(fcc, fcc, 1000.0, db)
+```
 """
 function find_common_tangent(
     phase1::Phase,
@@ -365,11 +372,9 @@ struct MiscibilityGapResult
 end
 
 """
-    find_miscibility_gap(phase::Phase, T::Real, db::Database,
-                         x1_init::Float64=0.05, x2_init::Float64=0.95;
-                         P::Real=1e5, max_iter::Int=100, tol::Float64=1e-8,
-                         component_indices::Tuple{Int,Int}=(1,2))
-                         -> Union{MiscibilityGapResult, Nothing}
+    find_miscibility_gap(phase, T, db, x1_init=0.05, x2_init=0.95;
+                         P=1e5, max_iter=100, tol=1e-8, component_indices=(1,2))
+        -> Union{MiscibilityGapResult, Nothing}
 
 Find miscibility gap (spinodal decomposition) within a single phase using
 common tangent construction with Newton-Raphson refinement.
@@ -379,16 +384,16 @@ condition is satisfied: dG/dx|_{x1} = dG/dx|_{x2} = (G2-G1)/(x2-x1)
 
 # Arguments
 
-  - `phase`: Phase to analyze
-  - `T`: Temperature [K]
-  - `db`: Database
-  - `x1_init`: Initial guess for left composition (default: 0.05)
-  - `x2_init`: Initial guess for right composition (default: 0.95)
-  - `P`: Pressure [Pa]
-  - `max_iter`: Maximum Newton iterations
-  - `tol`: Convergence tolerance
-  - `component_indices`: Tuple of (first, second) component indices in sublattice 1.
-    Default is (1, 2). For multi-component databases, specify the desired components.
+  - `phase::Phase`: Phase to analyze
+  - `T::Real`: Temperature [K]
+  - `db::Database`: Database
+  - `x1_init::Float64`: Initial guess for left composition
+  - `x2_init::Float64`: Initial guess for right composition
+  - `P::Real`: Pressure [Pa]
+  - `max_iter::Int`: Maximum Newton iterations
+  - `tol::Float64`: Convergence tolerance
+  - `component_indices::Tuple{Int,Int}`: Tuple of (first, second) component indices in sublattice 1.
+    For multi-component databases, specify the desired components.
 
 # Returns
 

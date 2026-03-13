@@ -193,44 +193,61 @@ end#============================================================================
 # Generic Interface Functions (to be implemented by specific solvers)
 
 """
-    minimize_gibbs(phase::Phase, T::Real, db::Database, solver::EquilibriumSolver;
-                   x_target::Union{Nothing, Dict}=nothing, P::Real=1e5)
+    minimize_gibbs(phase, T, db, solver; x_target=nothing, P=1e5)
 
 Minimize Gibbs energy for a single phase.
 
 # Arguments
 
-  - `phase`: Phase to minimize
-  - `T`: Temperature [K]
-  - `db`: Database with parameters
-  - `solver`: Solver to use
-  - `x_target`: Target composition (optional, for constrained minimization)
-  - `P`: Pressure [Pa]
+  - `phase::Phase`: Phase to minimize
+  - `T::Real`: Temperature [K]
+  - `db::Database`: Database with parameters
+  - `solver::EquilibriumSolver`: Solver to use
+  - `x_target::Union{Nothing, Dict}`: Target composition (optional, for constrained minimization)
+  - `P::Real`: Pressure [Pa]
 
 # Returns
 
   - `SinglePhaseResult`: Optimization result
+
+# Examples
+
+```julia
+db = read_tdb(joinpath(pkgdir(OpenCALPHAD), "test", "data", "agcu.TDB"))
+phase = get_phase(db, "FCC_A1")
+solver = NewtonSolver()
+result = minimize_gibbs(phase, 1000.0, db, solver)
+```
 """
 function minimize_gibbs end
 
 """
-    scan_composition(phase::Phase, T::Real, db::Database, solver::GridSearchSolver;
-                     element1::String="", element2::String="", P::Real=1e5)
+    scan_composition(phase, T, db, solver; element1="", element2="", P=1e5)
+        -> GridScanResult
 
 Scan Gibbs energy over composition space for a binary system.
 
 # Arguments
 
-  - `phase`: Phase to scan
-  - `T`: Temperature [K]
-  - `db`: Database
-  - `solver`: Grid search solver
-  - `element1`, `element2`: Elements defining the composition axis
-  - `P`: Pressure [Pa]
+  - `phase::Phase`: Phase to scan
+  - `T::Real`: Temperature [K]
+  - `db::Database`: Database
+  - `solver::GridSearchSolver`: Grid search solver
+  - `element1::String`, `element2::String`: Elements defining the composition axis
+  - `P::Real`: Pressure [Pa]
 
 # Returns
 
   - `GridScanResult`: Scan result
+
+# Examples
+
+```julia
+db = read_tdb(joinpath(pkgdir(OpenCALPHAD), "test", "data", "agcu.TDB"))
+fcc = get_phase(db, "FCC_A1")
+solver = GridSearchSolver(n_points=101)
+result = scan_composition(fcc, 1000.0, db, solver)
+```
 """
 function scan_composition end
 
