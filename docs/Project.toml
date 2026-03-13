@@ -1,5 +1,6 @@
 [deps]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+OpenCALPHAD = "f22b17f6-ccb9-4067-ab50-5d8cfb3cb77d"
 
 [compat]
 Documenter = "1"

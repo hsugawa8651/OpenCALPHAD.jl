@@ -285,15 +285,15 @@ function validate_ad_compatibility(func::Function; test_point::Real = 1000.0)
 end
 
 """
-    set_G!(phase::Phase, constituents::Vector{Symbol}, func::Function)
+    set_G!(phase, constituents, func)
 
 Set the Gibbs energy function for an endmember.
 
 # Arguments
 
-  - `phase`: The phase to modify
-  - `constituents`: Species on each sublattice (one per sublattice)
-  - `func`: Julia function `T -> G(T)` returning Gibbs energy in J/mol
+  - `phase::Phase`: The phase to modify
+  - `constituents::Vector{Symbol}`: Species on each sublattice (one per sublattice)
+  - `func::Function`: Julia function `T -> G(T)` returning Gibbs energy in J/mol
 
 # Example
 
@@ -304,7 +304,7 @@ set_G!(fcc, [:AG], T -> -7209.512 + 118.202*T - 23.8463*T*log(T))
 # Note
 
 The function is automatically checked for ForwardDiff compatibility.
-A warning is issued if the function may not work with automatic differentiation.    # Check AD compatibility
+A warning is issued if the function may not work with automatic differentiation.
 """
 function set_G!(phase::Phase, constituents::Vector{Symbol}, func::Function)
     # Check AD compatibility
@@ -321,16 +321,16 @@ function set_G!(phase::Phase, constituents::Vector{Symbol}, func::Function)
 end
 
 """
-    set_L!(phase::Phase, constituents::Vector{Symbol}, order::Int, func::Function)
+    set_L!(phase, constituents, order, func)
 
 Set a Redlich-Kister interaction parameter.
 
 # Arguments
 
-  - `phase`: The phase to modify
-  - `constituents`: Interacting species (e.g., [:AG, :CU] for binary)
-  - `order`: Interaction order (0, 1, 2, ...)
-  - `func`: Julia function `T -> L(T)` returning interaction energy in J/mol
+  - `phase::Phase`: The phase to modify
+  - `constituents::Vector{Symbol}`: Interacting species (e.g., [:AG, :CU] for binary)
+  - `order::Int`: Interaction order (0, 1, 2, ...)
+  - `func::Function`: Julia function `T -> L(T)` returning interaction energy in J/mol
 
 # Example
 
@@ -347,7 +347,7 @@ For ternary and higher order systems, use the same syntax:
 set_L!(fcc, [:AL, :CU, :MG], 0, T -> -30000.0)  # Ternary interaction
 ```
 
-# Note    # Check AD compatibility
+# Note
 
 The function is automatically checked for ForwardDiff compatibility.
 """
@@ -452,7 +452,7 @@ function find_va_index(constituents::Vector{String})
 end
 
 """
-    make_y_matrix(phase::Phase, x::Real, component_indices::Tuple{Int,Int}=(1,2)) -> Matrix
+    make_y_matrix(phase, x, component_indices=(1,2)) -> Matrix
 
 Create a site fraction matrix for a binary calculation within a multi-component phase.
 
@@ -463,10 +463,9 @@ This function properly handles:
 
 # Arguments
 
-  - `phase`: Phase object with constituent information
-  - `x`: Mole fraction of second component (component_indices[2])
-  - `component_indices`: Tuple of (first_component_idx, second_component_idx) in sublattice 1
-    Default is (1, 2) for standard binary TDB files.
+  - `phase::Phase`: Phase object with constituent information
+  - `x::Real`: Mole fraction of second component (component_indices[2])
+  - `component_indices::Tuple{Int,Int}`: Tuple of (first_component_idx, second_component_idx) in sublattice 1
 
 # Returns
 

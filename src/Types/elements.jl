@@ -38,8 +38,18 @@ function Base.show(io::IO, elem::Element)
     print(io, "Element($(elem.name), ref=$(elem.reference_state), mass=$(elem.mass))")
 end
 
-# Special electron element (for charged species)
+#=
+    ELECTRON
+
+Electron pseudo-element constant for charged species in ionic models.
+Used in TDB databases as "/-".
+=#
 const ELECTRON = Element("/-", "ELECTRON_GAS", 0.0, 0.0, 0.0)
 
-# Vacancy pseudo-element
+#=
+    VACANCY
+
+Vacancy pseudo-element constant.
+Used in TDB databases as "VA" to represent empty sublattice sites.
+=#
 const VACANCY = Element("VA", "VACUUM", 0.0, 0.0, 0.0)

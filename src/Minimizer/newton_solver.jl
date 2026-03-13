@@ -233,5 +233,9 @@ end
 # Use LinearAlgebra for norm
 using LinearAlgebra: norm
 
-# Simple mean function to avoid Statistics dependency
+#=
+    _mean(x) -> Number
+
+Simple mean function to avoid Statistics.jl dependency.
+=#
 _mean(x) = sum(x) / length(x)

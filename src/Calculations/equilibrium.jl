@@ -8,6 +8,10 @@
 
 Calculate thermodynamic equilibrium for the given database and conditions.
 
+Note: This is a stub for the general equilibrium solver. For working calculations,
+use [`step_temperature`](@ref), [`find_common_tangent`](@ref), or
+[`find_miscibility_gap`](@ref) instead.
+
 # Algorithm
 
  1. Extract conditions (T, P, composition)

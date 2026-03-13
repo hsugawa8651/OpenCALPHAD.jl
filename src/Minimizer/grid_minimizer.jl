@@ -194,7 +194,16 @@ function initial_guess_from_grid(
     return result.y_values[result.min_idx]
 end
 
-# Legacy types for compatibility
+#=
+    GridPoint
+
+Legacy grid search point struct retained for compatibility.
+
+# Fields
+  - `phase_idx::Int`: Index of the phase
+  - `site_fractions::Vector{Float64}`: Site fraction values
+  - `gibbs_energy::Float64`: Gibbs energy at this point [J/mol]
+=#
 struct GridPoint
     phase_idx::Int
     site_fractions::Vector{Float64}

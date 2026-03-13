@@ -19,6 +19,15 @@ where:
   - G_ideal: Ideal mixing entropy contribution
   - G_excess: Excess Gibbs energy (Redlich-Kister)
   - G_magnetic: Magnetic contribution (if applicable)
+
+# Examples
+
+```julia
+db = read_tdb(joinpath(pkgdir(OpenCALPHAD), "test", "data", "agcu.TDB"))
+phase = get_phase(db, "FCC_A1")
+y = make_y_matrix(phase, 0.3)
+G = calculate_gibbs_energy(phase, 1000.0, y, db)
+```
 """
 function calculate_gibbs_energy(
     phase::Phase, T::TT, y::AbstractMatrix{Y}, db::Database;
@@ -293,8 +302,13 @@ function calculate_reference_energy_julia(
     return G_ref
 end
 
-# Function barrier for type-unstable function call
-# Note: No return type assertion to support ForwardDiff Dual numbers
+#=
+    _eval_julia_param(f::Function, T) -> Number
+
+Evaluate a Julia DSL parameter function `f` at temperature `T`.
+Marked @noinline as a function barrier to isolate the type-unstable call
+and support ForwardDiff Dual numbers.
+=#
 @noinline _eval_julia_param(f::Function, T) = f(T)
 
 """
