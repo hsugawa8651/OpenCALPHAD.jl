@@ -1,0 +1,11 @@
+@$ Fe-Ni equilibrium at T=1000K, x(Ni)=0.3
+@$ Reference test for OpenCALPHAD.jl
+@$ TDB: FENI_clean.TDB (MQ& removed, BCC_A2 uncommented)
+@$ Run: oc6 < feni_equil_1000K.OCM > feni_equil_1000K.log
+new Y
+r t ../tdb/FENI_clean.TDB
+fe ni
+set c t=1000 p=1e5 n=1 x(ni)=0.3
+c e
+l r 1
+exit Y
