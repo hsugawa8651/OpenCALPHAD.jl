@@ -91,7 +91,8 @@ export SinglePhaseResult, GridScanResult
 # Exports - Functions
 export read_tdb
 export calculate_equilibrium, step_calculation
-export calculate_gibbs_energy
+export calculate_gibbs_energy, calculate_magnetic_energy
+export inden_hillert_g
 export calculate_entropy, calculate_enthalpy
 export calculate_mixing_gibbs, calculate_mixing_enthalpy, calculate_mixing_entropy
 export thermodynamic_properties

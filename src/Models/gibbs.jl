@@ -3,6 +3,188 @@
 # Copyright (C) 2026 Hiroharu Sugawara (Julia port)
 # Part of OpenCALPHAD.jl - Gibbs energy calculation module
 
+# =============================================================================
+# Inden-Hillert-Jarl magnetic model
+# =============================================================================
+
+"""
+    inden_hillert_g(tau, p)
+
+Compute the g(τ) function in the Inden-Hillert-Jarl model.
+
+  - τ < 1: Ferromagnetic region (below Curie temperature)
+  - τ ≥ 1: Paramagnetic region (above Curie temperature)
+
+# Arguments
+
+  - `tau`: Reduced temperature T/Tc
+  - `p`: Structure factor (0.40 for BCC, 0.28 for FCC/HCP)
+
+# References
+
+  - Hillert & Jarl (1978), Calphad 2(3), 227-238
+  - Inden (1976), CALPHAD V, Chapter IX
+"""
+function inden_hillert_g(tau, p)
+    A = 518 / 1125 + (11692 / 15975) * (1 / p - 1)
+    if tau < 1
+        term1 = 79 / (140 * p)
+        term2 = (474 / 497) * (1 / p - 1) *
+                (tau^3 / 6 + tau^9 / 135 + tau^15 / 600)
+        g = 1 - (term1 * tau^(-1) + term2) / A
+    else
+        g = -(tau^(-5) / 10 + tau^(-15) / 315 +
+              tau^(-25) / 1500) / A
+    end
+    return g
+end
+
+"""
+    evaluate_magnetic_property(phase, T, y, db, symbol) -> Real
+
+Evaluate a magnetic property (TC or BMAGN) as a composition-weighted
+value using the same Redlich-Kister mixing as Gibbs energy.
+
+# Arguments
+
+  - `symbol`: `'T'` for Curie temperature, `'B'` for Bohr magneton
+"""
+function evaluate_magnetic_property(
+    phase::Phase, T::TT, y::AbstractMatrix{Y},
+    db::Database, P::Real, symbol::Char,
+) where {TT <: Real, Y <: Real}
+    RT = promote_type(TT, Y, Float64)
+    val = zero(RT)
+
+    for param in phase.parameters
+        param.symbol == symbol || continue
+
+        # Determine if endmember or interaction
+        n_multi = count(c -> length(c) >= 2, param.constituents)
+
+        if n_multi == 0
+            # Endmember: product of site fractions * value
+            y_prod = one(RT)
+            for (s, constituents) in enumerate(param.constituents)
+                if s > length(phase.constituents)
+                    break
+                end
+                for spec in constituents
+                    idx = findfirst(
+                        ==(spec), phase.constituents[s],
+                    )
+                    if !isnothing(idx)
+                        y_prod *= y[s, idx]
+                    end
+                end
+            end
+            if y_prod > 1e-30
+                pval = evaluate_parameter(param, T, db, P)
+                val += y_prod * pval
+            end
+        else
+            # Interaction: Redlich-Kister
+            contribution = one(RT)
+            interaction_sublattice = 0
+            interaction_species = String[]
+
+            for (s, constituents) in enumerate(param.constituents)
+                if s > length(phase.constituents)
+                    break
+                end
+                if length(constituents) == 1
+                    spec = constituents[1]
+                    idx = findfirst(
+                        ==(spec), phase.constituents[s],
+                    )
+                    if !isnothing(idx)
+                        contribution *= y[s, idx]
+                    else
+                        contribution = zero(RT)
+                        break
+                    end
+                elseif length(constituents) == 2
+                    interaction_sublattice = s
+                    interaction_species = constituents
+                end
+            end
+
+            if contribution < 1e-30 ||
+               interaction_sublattice == 0
+                continue
+            end
+
+            spec1, spec2 = interaction_species
+            idx1 = findfirst(
+                ==(spec1),
+                phase.constituents[interaction_sublattice],
+            )
+            idx2 = findfirst(
+                ==(spec2),
+                phase.constituents[interaction_sublattice],
+            )
+            if isnothing(idx1) || isnothing(idx2)
+                continue
+            end
+
+            y1 = y[interaction_sublattice, idx1]
+            y2 = y[interaction_sublattice, idx2]
+            if y1 < 1e-30 || y2 < 1e-30
+                continue
+            end
+
+            pval = evaluate_parameter(param, T, db, P)
+            rk = y1 * y2 * (y1 - y2)^param.order * pval
+            val += contribution * rk
+        end
+    end
+
+    return val
+end
+
+"""
+    calculate_magnetic_energy(phase, T, y, db; P=1e5) -> Real
+
+Calculate the magnetic contribution to Gibbs energy using the
+Inden-Hillert-Jarl model.
+
+Returns 0 for phases without a magnetic model.
+
+# Formula
+
+G_mag = R * T * ln(β + 1) * g(T / Tc)
+
+where Tc and β are composition-weighted averages of TC and BMAGN
+parameters, and g(τ) is the Inden-Hillert-Jarl function.
+"""
+function calculate_magnetic_energy(
+    phase::Phase, T::TT, y::AbstractMatrix{Y},
+    db::Database; P::Real = 1e5,
+) where {TT <: Real, Y <: Real}
+    RT = promote_type(TT, Y, Float64)
+
+    mag = get(db.magnetic_models, uppercase(phase.name), nothing)
+    isnothing(mag) && return zero(RT)
+
+    Tc = evaluate_magnetic_property(phase, T, y, db, P, 'T')
+    beta = evaluate_magnetic_property(
+        phase, T, y, db, P, 'B',
+    )
+
+    # Anti-ferromagnetic handling
+    if Tc < 0
+        Tc = Tc / mag.afm_factor
+        beta = beta / mag.afm_factor
+    end
+
+    # Guard: no magnetic contribution if Tc or beta is negligible
+    (abs(Tc) < 1e-10 || abs(beta) < 1e-10) && return zero(RT)
+
+    tau = T / Tc
+    g = inden_hillert_g(tau, mag.p)
+    return R * T * log(abs(beta) + 1) * g
+end
+
 """
     calculate_gibbs_energy(phase::Phase, T::Real, y::AbstractMatrix, db::Database;
                           P::Real=1e5) -> Float64
@@ -37,8 +219,9 @@ function calculate_gibbs_energy(
     G_ref = calculate_reference_energy(phase, T, y, db, P)::RT
     G_ideal = calculate_ideal_mixing(phase, T, y)::RT
     G_excess = calculate_excess_energy(phase, T, y, db, P)::RT
+    G_mag = calculate_magnetic_energy(phase, T, y, db; P = P)::RT
 
-    return G_ref + G_ideal + G_excess
+    return G_ref + G_ideal + G_excess + G_mag
 end
 
 """
