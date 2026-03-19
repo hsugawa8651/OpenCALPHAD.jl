@@ -21,6 +21,7 @@ This page provides an overview of all examples included with OpenCALPHAD.jl.
 |------|-------------|
 | [`101_gibbs_energy_agcu.jl`](https://github.com/hsugawa8651/OpenCALPHAD.jl/blob/main/examples/101_gibbs_energy_agcu.jl) | Gibbs energy curve with common tangent construction |
 | [`102_gibbs_energy_crmo.jl`](https://github.com/hsugawa8651/OpenCALPHAD.jl/blob/main/examples/102_gibbs_energy_crmo.jl) | Cr-Mo from multi-component database (manual y-matrix) |
+| [`103_gibbs_energy_feni.jl`](https://github.com/hsugawa8651/OpenCALPHAD.jl/blob/main/examples/103_gibbs_energy_feni.jl) | Fe-Ni Gibbs energy with magnetic contribution (IHJ) |
 | [`122_scan_crmo.jl`](https://github.com/hsugawa8651/OpenCALPHAD.jl/blob/main/examples/122_scan_crmo.jl) | Cr-Mo with `component_indices` (high-level API) |
 | [`131_julia_dsl_agcu.jl`](https://github.com/hsugawa8651/OpenCALPHAD.jl/blob/main/examples/131_julia_dsl_agcu.jl) | **Julia DSL basics** - define phases without TDB |
 | [`131_julia_dsl_agcu.ipynb`](https://github.com/hsugawa8651/OpenCALPHAD.jl/blob/main/examples/131_julia_dsl_agcu.ipynb) | Jupyter notebook version |

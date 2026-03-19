@@ -1,0 +1,39 @@
+{
+  "metadata": {
+    "generator": "openCALPHAD",
+    "version": "6.100",
+    "platform": "macOS arm64 (Apple Silicon)",
+    "generated": "2026-03-19T23:30:00+09:00",
+    "macro": "macros/feni_equil_600K.OCM",
+    "tdb": "tdb/FENI_clean.TDB"
+  },
+  "conditions": {
+    "T": 600,
+    "P": 1e5,
+    "N": 1,
+    "x_Ni": 0.3
+  },
+  "results": {
+    "G_total": -23265.405,
+    "H_total": 6991.3,
+    "S_total": 50.43,
+    "phases": [
+      {
+        "name": "BCC_A2",
+        "status": "stable",
+        "amount": 0.4652,
+        "composition": {"FE": 0.971109, "NI": 0.028891}
+      },
+      {
+        "name": "FCC_A1#1",
+        "status": "stable",
+        "amount": 0.5348,
+        "composition": {"FE": 0.464168, "NI": 0.535832}
+      }
+    ],
+    "components": {
+      "FE": {"mole_fraction": 0.70000, "mu_over_RT": -3.9437, "activity": 1.9377e-2},
+      "NI": {"mole_fraction": 0.30000, "mu_over_RT": -6.3434, "activity": 1.7582e-3}
+    }
+  }
+}

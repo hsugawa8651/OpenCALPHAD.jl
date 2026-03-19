@@ -119,6 +119,29 @@ using OpenCALPHAD
         @test isfinite(G)
     end
 
+    @testset "Fe-Ni Gibbs energy (FENI_clean, Fortran reference)" begin
+        feni_path = joinpath(
+            @__DIR__, "..", "reftest", "tdb", "FENI_clean.TDB",
+        )
+        db = read_tdb(feni_path)
+
+        # --- T=1000K, x(Ni)=0.3: single-phase FCC_A1 ---
+        # Fortran reference: G = -49189.449 J/mol
+        fcc = get_phase(db, "FCC_A1")
+        y = OpenCALPHAD.make_y_matrix(fcc, 0.3)
+        G_1000 = calculate_gibbs_energy(fcc, 1000.0, y, db)
+        @test G_1000 ≈ -49189.449 atol = 50
+
+        # --- BCC_A2 is now available in FENI_clean.TDB ---
+        bcc = get_phase(db, "BCC_A2")
+        @test !isnothing(bcc)
+
+        # --- Pure Fe BCC magnetic energy at 800K ---
+        y_fe = OpenCALPHAD.make_y_matrix(bcc, 0.0)
+        G_mag_fe = calculate_magnetic_energy(bcc, 800.0, y_fe, db)
+        @test G_mag_fe ≈ -1944.42 atol = 1.0
+    end
+
     @testset "Constants" begin
         @test OpenCALPHAD.R ≈ 8.314462618
         @test OpenCALPHAD.P_REF ≈ 1e5

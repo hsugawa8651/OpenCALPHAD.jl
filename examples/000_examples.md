@@ -1,6 +1,6 @@
 # OpenCALPHAD.jl Examples
 
-Last-Modified: 2026-03-13
+Last-Modified: 2026-03-19
 
 ## Numbering System
 
@@ -20,6 +20,7 @@ Last-Modified: 2026-03-13
 |------|--------|----------|
 | x1 | Ag-Cu | agcu.TDB |
 | x2 | Cr-Mo / Cr-Fe | steel1.TDB (via component_indices) |
+| x3 | Fe-Ni | FENI_clean.TDB (magnetic) |
 
 ## File List
 
@@ -30,6 +31,7 @@ Last-Modified: 2026-03-13
 | `101_gibbs_energy_agcu.jl` | Gibbs energy curve with common tangent construction |
 | `102_gibbs_energy_crmo.jl` | Cr-Mo from multi-component database (manual y-matrix) |
 | `122_scan_crmo.jl` | Cr-Mo with `component_indices` (high-level API) |
+| `103_gibbs_energy_feni.jl` | Fe-Ni Gibbs energy with magnetic contribution (IHJ) |
 | `131_julia_dsl_agcu.jl` | Julia DSL basics - define phases without TDB |
 
 ### 2xx: Equilibrium
@@ -97,6 +99,7 @@ julia --project=. -i examples/411_phase_diagram_agcu.jl
 Each example generates corresponding PNG files in the `examples/` directory:
 - `101_gibbs_energy_agcu.png`
 - `102_gibbs_energy_crmo.png`
+- `103_gibbs_energy_feni.png`
 - `122_scan_crmo.png`
 - `311_step_gm_agcu.png`
 - `312_two_phase_crfe.png`

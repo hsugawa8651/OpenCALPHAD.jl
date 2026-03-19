@@ -1,0 +1,11 @@
+@$ Fe-Ni equilibrium at T=600K, x(Ni)=0.3 (two-phase BCC+FCC)
+@$ Reference test for OpenCALPHAD.jl
+@$ TDB: FENI_clean.TDB (MQ& removed, BCC_A2 uncommented)
+@$ Run: oc6 < feni_equil_600K.OCM > feni_equil_600K.log
+new Y
+r t ../tdb/FENI_clean.TDB
+fe ni
+set c t=600 p=1e5 n=1 x(ni)=0.3
+c e
+l r 1
+exit Y
