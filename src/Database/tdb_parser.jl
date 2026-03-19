@@ -41,6 +41,7 @@ function parse_tdb(content::AbstractString, source::AbstractString = "")
     elements = Element[]
     functions = GFunction[]
     phases = Phase[]
+    magnetic_models = Dict{String, MagneticModel}()
 
     # Normalize line endings and join continuation lines
     lines = preprocess_tdb(content)
@@ -79,12 +80,16 @@ function parse_tdb(content::AbstractString, source::AbstractString = "")
             if !isnothing(param)
                 add_parameter!(phases, param)
             end
+        elseif keyword == "TYPE_DEFINITION"
+            parse_type_definition!(magnetic_models, line)
         end
 
         i += 1
     end
 
-    return Database(elements, functions, phases, source)
+    return Database(
+        elements, functions, phases, source, magnetic_models,
+    )
 end
 
 """
@@ -413,4 +418,34 @@ function add_parameter!(phases::Vector{Phase}, param::Parameter)
     if !isnothing(idx)
         push!(phases[idx].parameters, param)
     end
+end
+
+"""
+    parse_type_definition!(magnetic_models, line)
+
+Parse a TYPE_DEFINITION line. Only MAGNETIC type definitions are
+extracted; other TYPE_DEFINITION variants are silently skipped.
+
+# TDB format
+
+    TYPE_DEFINITION <id> GES A_P_D <PHASE> MAGNETIC <afm> <p>
+
+where `afm` is the anti-ferromagnetic factor (-1 for BCC, -3 for
+FCC/HCP) and `p` is the structure factor (0.40 or 0.28).
+"""
+function parse_type_definition!(
+    magnetic_models::Dict{String, MagneticModel},
+    line::AbstractString,
+)
+    pattern =
+        r"TYPE_DEFINITION\s+\S+\s+GES\s+A_P_D\s+(\S+)\s+MAGNETIC\s+([+-]?\d+\.?\d*(?:[eE][+-]?\d+)?)\s+([+-]?\d+\.?\d*(?:[eE][+-]?\d+)?)"i
+    m = match(pattern, line)
+    isnothing(m) && return nothing
+
+    phase_name = uppercase(m.captures[1])
+    afm_factor = parse(Float64, m.captures[2])
+    p = parse(Float64, m.captures[3])
+
+    magnetic_models[phase_name] = MagneticModel(afm_factor, p)
+    return nothing
 end
