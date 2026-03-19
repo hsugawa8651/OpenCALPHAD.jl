@@ -64,6 +64,61 @@ using OpenCALPHAD
         @test isempty(db_empty.magnetic_models)
     end
 
+    @testset "Magnetic Gibbs energy" begin
+        feni_path = joinpath(@__DIR__, "..", "reftest", "tdb", "FENI.TDB")
+        db = read_tdb(feni_path)
+
+        # --- inden_hillert_g unit tests ---
+        # g(tau) is always negative for tau > 0
+        @test inden_hillert_g(0.5, 0.40) < 0
+        @test inden_hillert_g(2.0, 0.40) < 0
+        # Larger magnitude below Tc than above
+        @test abs(inden_hillert_g(0.5, 0.40)) >
+              abs(inden_hillert_g(2.0, 0.40))
+        # Continuity at tau=1
+        g_below = inden_hillert_g(0.9999, 0.40)
+        g_above = inden_hillert_g(1.0001, 0.40)
+        @test abs(g_below - g_above) < 0.01
+        # FCC structure factor
+        @test inden_hillert_g(0.5, 0.28) < 0
+
+        # --- Pure Ni FCC at 300K (ferromagnetic, Tc=633) ---
+        # Note: FENI.TDB has BCC_A2 commented out, only FCC_A1 available
+        fcc = get_phase(db, "FCC_A1")
+        y_ni = OpenCALPHAD.make_y_matrix(fcc, 1.0)  # pure Ni
+        G_mag_ni = calculate_magnetic_energy(fcc, 300.0, y_ni, db)
+        @test G_mag_ni ≈ -870.9286856834696 rtol = 1e-6
+
+        # --- Pure Ni FCC at 800K (paramagnetic) ---
+        G_mag_ni_para = calculate_magnetic_energy(
+            fcc, 800.0, y_ni, db,
+        )
+        @test G_mag_ni_para ≈ -36.99012699954572 rtol = 1e-6
+
+        # --- Non-magnetic phase: no magnetic contribution ---
+        liq = get_phase(db, "LIQUID")
+        y_liq = zeros(1, 2)
+        G_mag_liq = calculate_magnetic_energy(liq, 1000.0, y_liq, db)
+        @test G_mag_liq == 0.0
+
+        # --- Regression: Ag-Cu (no TC/BMAGN params) unchanged ---
+        agcu_path = joinpath(@__DIR__, "..", "reftest", "tdb", "agcu.TDB")
+        db_agcu = read_tdb(agcu_path)
+        fcc_agcu = get_phase(db_agcu, "FCC_A1")
+        y_agcu = OpenCALPHAD.make_y_matrix(fcc_agcu, 0.3)
+        G_agcu = calculate_gibbs_energy(
+            fcc_agcu, 1000.0, y_agcu, db_agcu,
+        )
+        @test G_agcu ≈ -53092.813191067304 rtol = 1e-10
+
+        # --- ForwardDiff compatibility ---
+        using ForwardDiff
+        G, dG, d2G = OpenCALPHAD.gibbs_energy_with_derivatives(
+            fcc, 300.0, y_ni, db,
+        )
+        @test isfinite(G)
+    end
+
     @testset "Constants" begin
         @test OpenCALPHAD.R ≈ 8.314462618
         @test OpenCALPHAD.P_REF ≈ 1e5
