@@ -35,6 +35,33 @@ using OpenCALPHAD
         db = Database()
         @test length(db.elements) == 0
         @test length(db.phases) == 0
+        @test isempty(db.magnetic_models)
+    end
+
+    @testset "MagneticModel parsing" begin
+        # FENI.TDB has TYPE_DEFINITION MAGNETIC for BCC_A2 and FCC_A1
+        feni_path = joinpath(@__DIR__, "..", "reftest", "tdb", "FENI.TDB")
+        db = read_tdb(feni_path)
+
+        # BCC_A2: AFM factor -1, p=0.40
+        @test haskey(db.magnetic_models, "BCC_A2")
+        @test db.magnetic_models["BCC_A2"].afm_factor ≈ -1.0
+        @test db.magnetic_models["BCC_A2"].p ≈ 0.40
+
+        # FCC_A1: AFM factor -3, p=0.28
+        @test haskey(db.magnetic_models, "FCC_A1")
+        @test db.magnetic_models["FCC_A1"].afm_factor ≈ -3.0
+        @test db.magnetic_models["FCC_A1"].p ≈ 0.28
+
+        # agcu.TDB also has TYPE_DEFINITION MAGNETIC (no TC/BMAGN params)
+        agcu_path = joinpath(@__DIR__, "..", "reftest", "tdb", "agcu.TDB")
+        db_agcu = read_tdb(agcu_path)
+        @test haskey(db_agcu.magnetic_models, "BCC_A2")
+        @test haskey(db_agcu.magnetic_models, "FCC_A1")
+
+        # Database() constructor has empty magnetic_models
+        db_empty = Database()
+        @test isempty(db_empty.magnetic_models)
     end
 
     @testset "Constants" begin

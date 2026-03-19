@@ -75,7 +75,7 @@ include("Calculations/phase_field.jl")
 include("Plotting/recipes.jl")
 
 # Exports - Types
-export Element, Phase, Parameter, GFunction, Database
+export Element, Phase, Parameter, GFunction, Database, MagneticModel
 export JuliaParameter  # DSL support
 export EquilCondition, ConditionType, ConditionSet, Equilibrium
 export PhaseResult, ComponentResult

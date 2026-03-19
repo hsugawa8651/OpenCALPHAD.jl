@@ -4,6 +4,24 @@
 # Part of OpenCALPHAD.jl - Phase type definitions
 
 """
+    MagneticModel
+
+Represents the magnetic model associated with a phase.
+
+Stores metadata from `TYPE_DEFINITION ... MAGNETIC` lines in TDB files.
+Used by the Inden-Hillert-Jarl model for magnetic Gibbs energy.
+
+# Fields
+
+  - `afm_factor::Float64`: Anti-ferromagnetic factor (-1 for BCC, -3 for FCC/HCP)
+  - `p::Float64`: Structure factor (0.40 for BCC, 0.28 for FCC/HCP)
+"""
+struct MagneticModel
+    afm_factor::Float64
+    p::Float64
+end
+
+"""
     Sublattice
 
 Type alias for sublattice constituents (vector of species names).

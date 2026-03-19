@@ -14,6 +14,7 @@ Container for thermodynamic database information.
   - `functions::Vector{GFunction}`: Gibbs energy functions
   - `phases::Vector{Phase}`: Phase definitions with parameters
   - `source::String`: Source file path or identifier
+  - `magnetic_models::Dict{String,MagneticModel}`: Magnetic model metadata per phase
 
 # Examples
 
@@ -27,16 +28,23 @@ struct Database
     functions::Vector{GFunction}
     phases::Vector{Phase}
     source::String
+    magnetic_models::Dict{String, MagneticModel}
 end
 
 function Database()
-    return Database(Element[], GFunction[], Phase[], "")
+    return Database(
+        Element[], GFunction[], Phase[], "",
+        Dict{String, MagneticModel}(),
+    )
 end
 
 function Database(elements::Vector{Element},
     functions::Vector{GFunction},
     phases::Vector{Phase})
-    return Database(elements, functions, phases, "")
+    return Database(
+        elements, functions, phases, "",
+        Dict{String, MagneticModel}(),
+    )
 end
 
 function Base.show(io::IO, db::Database)
