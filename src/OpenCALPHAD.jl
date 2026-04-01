@@ -73,6 +73,7 @@ include("Calculations/phase_field.jl")
 
 # Plotting
 include("Plotting/recipes.jl")
+include("Plotting/fallbacks.jl")
 
 # Exports - Types
 export Element, Phase, Parameter, GFunction, Database, MagneticModel
@@ -126,6 +127,7 @@ export boundaries
 
 # Exports - Plotting
 export plot_phase_diagram, plot_gibbs_curve
+export savefig_publication
 
 # Exports - DSL (Julia function parameters)
 export set_G!, set_L!
