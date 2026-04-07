@@ -20,6 +20,7 @@ makedocs(
         "Getting Started" => "getting_started.md",
         "Workflow" => "workflow.md",
         "Examples" => "examples.md",
+        "Plotting" => "plotting.md",
         "Julia DSL" => "julia_dsl.md",
         "API Reference" => "api.md",
     ],
