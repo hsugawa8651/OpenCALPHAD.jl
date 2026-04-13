@@ -1,7 +1,12 @@
 using Test
 using OpenCALPHAD
+using Aqua
 
 @testset "OpenCALPHAD.jl" begin
+    @testset "Aqua quality assurance" begin
+        Aqua.test_all(OpenCALPHAD; ambiguities=false)
+    end
+
     @testset "Types" begin
         @testset "Element" begin
             ag = Element("AG", "FCC_A1", 107.8682, 5744.6, 42.551)
