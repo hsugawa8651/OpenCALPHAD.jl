@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "OpenCALPHAD.jl: Julia port of OpenCALPHAD for CALPHAD thermodynamic calculations"
+type: software
+authors:
+  - family-names: Sugawara
+    given-names: Hiroharu
+    email: hsugawa@gmail.com
+    orcid: "https://orcid.org/0000-0002-0071-2396"
+license: GPL-3.0-or-later
+repository-code: "https://github.com/hsugawa8651/OpenCALPHAD.jl"
+version: 0.1.1
+date-released: 2026-03-13
+doi: 10.5281/zenodo.18670627
+references:
+  - type: article
+    authors:
+      - family-names: Sundman
+        given-names: Bo
+      - family-names: Kattner
+        given-names: Ursula R.
+      - family-names: Palumbo
+        given-names: Mauro
+      - family-names: Fries
+        given-names: Suzana G.
+    title: "OpenCalphad - a free thermodynamic software"
+    journal: "Integrating Materials and Manufacturing Innovation"
+    year: 2015
+    volume: 4
+    issue: 1
+    doi: 10.1186/s40192-014-0029-1
