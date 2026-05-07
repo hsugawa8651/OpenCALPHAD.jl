@@ -587,4 +587,7 @@ using Aqua
 
     # Multi-component support tests (Cr-Mo from steel1.TDB)
     include("multicomponent.jl")
+
+    # PythonPlot extension: savefig_publication
+    include("test_publication.jl")
 end
