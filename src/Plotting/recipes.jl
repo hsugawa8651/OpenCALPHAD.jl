@@ -20,9 +20,9 @@ Plot a Gibbs energy curve. Requires `using Plots`.
 """
 function plot_gibbs_curve end
 
-"""
-    savefig_publication(result, filename; kwargs...)
-
-Save a publication-quality figure. Requires `using PythonPlot`.
-"""
+# PythonPlot extension API (3-layer). Implemented — with their authoritative,
+# per-method docstrings — in ext/OpenCALPHADPythonPlotExt.jl. The extension
+# module is added to Documenter's `modules` so `@docs` renders those docstrings.
 function savefig_publication end
+function plot_on_axis! end
+function figure_publication end

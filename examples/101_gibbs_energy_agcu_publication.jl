@@ -34,11 +34,11 @@ result = scan_composition(fcc, T, db, solver)
 stem = joinpath(@__DIR__, "101_gibbs_energy_agcu_publication")
 
 savefig_publication(result, "$stem.pdf";
-                    axis_width_cm = 8.0, axis_height_cm = 6.0,
+                    axis_width_mm = 80.0, axis_height_mm = 60.0,
                     title = "Ag-Cu FCC Gibbs energy at T = $(Int(T)) K",
                     show_minimum = true)
 savefig_publication(result, "$stem.png";
-                    axis_width_cm = 8.0, axis_height_cm = 6.0,
+                    axis_width_mm = 80.0, axis_height_mm = 60.0,
                     title = "Ag-Cu FCC Gibbs energy at T = $(Int(T)) K",
                     show_minimum = true)
 

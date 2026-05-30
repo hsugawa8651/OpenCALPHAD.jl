@@ -90,6 +90,12 @@ tracked. Run the script locally to regenerate the figures on demand.
 | `621_parameter_optimization.jl` | Fitting R-K coefficients (+ combined figure for JOSS) |
 | `624_magnetic_optimization.jl` | Optimizing magnetic parameters (Tc, beta) |
 
+### 8xx: Composite / showcase figures
+
+| File | Description |
+|------|-------------|
+| `811_composite_publication.jl` | **Publication-quality** 2×2 composite (Gibbs curve / STEP G(T) / phase fractions / phase diagram) via `OpenCALPHAD.plot_on_axis!` subplot composition (PythonPlot 3-layer API) |
+
 ### 9xx: Benchmarks / References
 
 | File | Description |

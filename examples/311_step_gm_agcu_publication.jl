@@ -39,7 +39,7 @@ for kind in (:gibbs, :phase_fraction)
     for ext in ("pdf", "png")
         savefig_publication(step_result, "$(stem)_$(kind)_publication.$(ext)";
                             kind = kind,
-                            axis_width_cm = 8.0, axis_height_cm = 6.0,
+                            axis_width_mm = 80.0, axis_height_mm = 60.0,
                             title = "Ag-Cu STEP, x(Cu) = 0.5")
     end
 end
