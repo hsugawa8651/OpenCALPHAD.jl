@@ -9,8 +9,8 @@ authors:
     orcid: "https://orcid.org/0000-0002-0071-2396"
 license: GPL-3.0-or-later
 repository-code: "https://github.com/hsugawa8651/OpenCALPHAD.jl"
-version: 0.2.0
-date-released: 2026-04-14
+version: 0.2.1
+date-released: 2026-05-31
 doi: 10.5281/zenodo.18670627
 references:
   - type: article
