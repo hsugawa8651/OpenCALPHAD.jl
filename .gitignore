@@ -11,6 +11,9 @@ deps/usr/
 docs/build/
 docs/site/
 
+# CondaPkg-generated environments (PythonPlot/matplotlib via Conda)
+.CondaPkg/
+
 # Paper build artifacts
 paper/paper.pdf
 

@@ -30,10 +30,10 @@ result = map_phase_diagram(fcc, db, 800.0, 1300.0, 25.0)
 stem = joinpath(@__DIR__, "411_phase_diagram_agcu_publication")
 
 savefig_publication(result, "$stem.pdf";
-                    axis_width_cm = 10.0, axis_height_cm = 7.0,
+                    axis_width_mm = 100.0, axis_height_mm = 70.0,
                     title = "Ag-Cu binary phase diagram (FCC miscibility gap)")
 savefig_publication(result, "$stem.png";
-                    axis_width_cm = 10.0, axis_height_cm = 7.0,
+                    axis_width_mm = 100.0, axis_height_mm = 70.0,
                     title = "Ag-Cu binary phase diagram (FCC miscibility gap)")
 
 println("Wrote $stem.pdf and $stem.png")

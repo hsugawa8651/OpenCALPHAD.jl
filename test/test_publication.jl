@@ -9,6 +9,9 @@ using PythonPlot
 # Force non-interactive backend on CI
 PythonPlot.matplotlib.use("Agg")
 
+# Read a matplotlib title back as a Julia string (robust to Py wrapping)
+_title(ax) = string(ax.get_title())
+
 @testset "savefig_publication (PythonPlot)" begin
     # ── Fixtures ──
     tdb_path = joinpath(dirname(@__DIR__), "reftest", "tdb", "agcu.TDB")
@@ -68,13 +71,30 @@ PythonPlot.matplotlib.use("Agg")
         end
     end
 
-    @testset "axis_width_cm / axis_height_cm custom kwargs" begin
+    @testset "axis_width_mm / axis_height_mm custom kwargs" begin
         mktempdir() do tmp
             path = joinpath(tmp, "custom.pdf")
+            savefig_publication(grid_result, path;
+                                axis_width_mm = 100.0, axis_height_mm = 50.0)
+            @test isfile(path)
+        end
+    end
+
+    @testset "axis_*_cm deprecated alias still works" begin
+        mktempdir() do tmp
+            path = joinpath(tmp, "cm.pdf")
             savefig_publication(grid_result, path;
                                 axis_width_cm = 10.0, axis_height_cm = 5.0)
             @test isfile(path)
         end
+    end
+
+    @testset "mm takes precedence when both mm and cm given" begin
+        # mm wins; the cm alias is ignored (with a deprecation warning), no error
+        fig, ax = OpenCALPHAD.figure_publication(
+            grid_result; axis_width_mm = 80.0, axis_width_cm = 8.0)
+        @test fig isa PythonPlot.Figure
+        PythonPlot.close(fig)
     end
 
     @testset "title kwarg" begin
@@ -94,7 +114,83 @@ PythonPlot.matplotlib.use("Agg")
     end
 
     @testset "kind unknown value throws ArgumentError" begin
+        # After the 3-layer refactor this ArgumentError originates in
+        # plot_on_axis!(::StepResult); behavior unchanged for savefig callers.
         @test_throws ArgumentError savefig_publication(
             step_result, joinpath(tempdir(), "x.pdf"); kind = :bogus)
+    end
+
+    # ─────────────────── L1: plot_on_axis! (subplot composition) ───────────────────
+    @testset "L1 plot_on_axis! returns ax (4 result paths)" begin
+        for (r, kw) in ((grid_result, (;)),
+                        (step_result, (;)),
+                        (step_result, (kind = :phase_fraction,)),
+                        (pd_result, (;)))
+            fig = PythonPlot.figure()
+            ax = fig.add_subplot()
+            @test OpenCALPHAD.plot_on_axis!(ax, r; kw...) === ax
+            PythonPlot.close(fig)
+        end
+    end
+
+    @testset "L1 2x2 subplot composition smoke" begin
+        mktempdir() do tmp
+            fig = PythonPlot.figure(figsize = (10, 8))
+            OpenCALPHAD.plot_on_axis!(fig.add_subplot(2, 2, 1), grid_result)
+            OpenCALPHAD.plot_on_axis!(fig.add_subplot(2, 2, 2), step_result; kind = :gibbs)
+            OpenCALPHAD.plot_on_axis!(fig.add_subplot(2, 2, 3), step_result; kind = :phase_fraction)
+            OpenCALPHAD.plot_on_axis!(fig.add_subplot(2, 2, 4), pd_result)
+            path = joinpath(tmp, "composite.pdf")
+            fig.savefig(path)
+            PythonPlot.close(fig)
+            @test isfile(path)
+        end
+    end
+
+    @testset "L1 plot_on_axis!(::StepResult; kind=:bogus) throws" begin
+        fig = PythonPlot.figure()
+        ax = fig.add_subplot()
+        @test_throws ArgumentError OpenCALPHAD.plot_on_axis!(ax, step_result; kind = :bogus)
+        PythonPlot.close(fig)
+    end
+
+    @testset "L1 title resolution (2-stage: empty -> no title, kwarg -> override)" begin
+        fig = PythonPlot.figure(); ax = fig.add_subplot()
+        OpenCALPHAD.plot_on_axis!(ax, grid_result)
+        @test isempty(_title(ax))                       # no PF-style default title
+        PythonPlot.close(fig)
+        fig = PythonPlot.figure(); ax = fig.add_subplot()
+        OpenCALPHAD.plot_on_axis!(ax, grid_result; title = "Ag-Cu")
+        @test occursin("Ag-Cu", _title(ax))
+        PythonPlot.close(fig)
+    end
+
+    # ─────────────────── L2: figure_publication ───────────────────
+    @testset "L2 figure_publication returns (fig, ax) for all 3 result types" begin
+        for r in (grid_result, step_result, pd_result)
+            fig, ax = OpenCALPHAD.figure_publication(r)
+            @test fig isa PythonPlot.Figure
+            PythonPlot.close(fig)
+        end
+    end
+
+    @testset "L2 StepResult kind flows through to L1" begin
+        fig, ax = OpenCALPHAD.figure_publication(step_result; kind = :phase_fraction)
+        @test fig isa PythonPlot.Figure
+        PythonPlot.close(fig)
+        @test_throws ArgumentError OpenCALPHAD.figure_publication(step_result; kind = :bogus)
+    end
+
+    @testset "L2 ylims routing" begin
+        fig, ax = OpenCALPHAD.figure_publication(grid_result; ylims = (-60000.0, 0.0))
+        @test fig isa PythonPlot.Figure
+        @test occursin("-60000", string(ax.get_ylim()))
+        PythonPlot.close(fig)
+    end
+
+    # ─────────────────── fallback (bad type → src ArgumentError) ───────────────────
+    @testset "fallback: unsupported type throws ArgumentError" begin
+        @test_throws ArgumentError OpenCALPHAD.plot_on_axis!(nothing, "not a result")
+        @test_throws ArgumentError OpenCALPHAD.figure_publication("not a result")
     end
 end

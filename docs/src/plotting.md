@@ -6,7 +6,7 @@ OpenCALPHAD.jl provides three plotting paths via package extensions:
 |-----------|---------|---------------|
 | RecipesBaseExt | `using RecipesBase` (or any backend) | `plot(result)` recipes for all result types |
 | PlotsExt | `using Plots` | Convenience functions `plot_gibbs_curve`, `plot_phase_diagram` |
-| PythonPlotExt | `using PythonPlot` | `savefig_publication` for publication-quality static PDF / PNG |
+| PythonPlotExt | `using PythonPlot` | 3-layer API `plot_on_axis!` / `figure_publication` / `savefig_publication` for publication-quality static PDF / PNG |
 
 ---
 
@@ -54,7 +54,7 @@ Plot Gibbs energy G(T) from a STEP calculation.
 ```julia
 db = read_tdb("agcu.TDB")
 fcc = get_phase(db, "FCC_A1")
-result = step_calculation(fcc, db, 300.0, 1400.0, 10.0; x_overall=0.5)
+result = step_temperature(fcc, db, 0.5, 300.0, 1400.0, 10.0)
 
 plot(result)
 ```
@@ -100,7 +100,7 @@ result = map_phase_diagram(fcc, db, 800.0, 1300.0, 25.0)
 plot(result)
 ```
 
-The recipe filters converged points, constructs a closed boundary curve from left and right compositions, and fills the two-phase region.
+The recipe filters converged points, constructs a closed boundary curve from left and right compositions, and fills the region between the two boundaries.
 
 | Attribute | Default |
 |-----------|---------|
@@ -129,14 +129,26 @@ See [`plot_phase_diagram`](@ref) and [`plot_gibbs_curve`](@ref) in the [API Refe
 ## Publication-quality output (PythonPlot)
 
 For publication-quality static figures (PDF / PNG via matplotlib), load the
-PythonPlot extension and call [`savefig_publication`](@ref). The output
-format is selected by the file-name extension (`.pdf` and `.png` work out
-of the box).
+PythonPlot extension. The API has **three layers** (L1 / L2 are unexported —
+call them as `OpenCALPHAD.…`; L3 `savefig_publication` is exported):
+
+| Layer | Function | Returns | Use |
+|-------|----------|---------|-----|
+| L3 | `savefig_publication(result, path; ...)` | `path` | save to PDF or PNG in one call (format from the file extension; delegates to L2) |
+| L2 | `OpenCALPHAD.figure_publication(result; ...)` | `(fig, ax)` | a sized figure + axis to tweak before saving |
+| L1 | `OpenCALPHAD.plot_on_axis!(ax, result; ...)` | `ax` | draw onto your own matplotlib axis (compose a subplot grid) |
 
 ```julia
 using OpenCALPHAD, PythonPlot
-PythonPlot.matplotlib.use("Agg")  # required for headless / CI environments
 ```
+
+On a headless machine or in CI (no display), select a non-interactive backend
+before plotting: `PythonPlot.matplotlib.use("Agg")`.
+
+In every layer the `result` argument may be a `GridScanResult` (Gibbs curve),
+a `StepResult` (`kind = :gibbs` or `:phase_fraction`), or a `PhaseDiagramResult`
+(binary phase diagram). The examples below use L3 (`savefig_publication`) for
+each of these; the *Composing subplots* section further down shows L1 / L2.
 
 ### Gibbs energy curve — `GridScanResult`
 
@@ -151,7 +163,7 @@ savefig_publication(grid_result, "gibbs.pdf";
                     show_minimum = true)
 ```
 
-`show_minimum = true` draws a vertical line at the minimum-G composition.
+`show_minimum = true` draws a vertical line at the composition of minimum G.
 
 ### `StepResult` — Gibbs vs axis or phase fractions
 
@@ -175,28 +187,63 @@ fcc = get_phase(db, "FCC_A1")
 pd_result = map_phase_diagram(fcc, db, 800.0, 1300.0, 25.0)
 
 savefig_publication(pd_result, "phase_diagram.pdf";
-                    axis_width_cm = 10.0, axis_height_cm = 7.0)
+                    axis_width_mm = 100.0, axis_height_mm = 70.0)
 ```
 
-Non-converged points are filtered out automatically; the two-phase region
-between the two boundaries is shaded with `fill_color` at `fill_alpha`.
+Points that did not converge are filtered out automatically; the region
+between the two boundaries is shaded with `fill_color` at `fill_alpha`. If no
+point converges, an empty axes with only the axis labels is drawn.
 
-### Common keyword arguments
+### Keyword reference
 
-| Keyword | Default | Meaning |
-|---|---|---|
-| `axis_width_cm`  | `8.0` | Plot area width  in cm |
-| `axis_height_cm` | `6.0` | Plot area height in cm |
-| `title`          | `""`  | Figure title (empty string keeps no title) |
-| `ylims`          | `nothing` | Pass a tuple to override the y-axis limits |
+Keywords are documented on the functions below. The plot keywords for each
+result type (and the label and title precedence) live on `plot_on_axis!`;
+`figure_publication` adds the figure size keywords; `savefig_publication`
+forwards everything:
 
-`PhaseDiagramResult` additionally takes:
+```@docs
+OpenCALPHAD.savefig_publication
+OpenCALPHAD.figure_publication
+OpenCALPHAD.plot_on_axis!
+```
 
-| Keyword | Default | Meaning |
-|---|---|---|
-| `fill_color` | `"lightgray"` | Two-phase region shading color |
-| `fill_alpha` | `0.3`         | Two-phase region shading alpha |
-| `boundary_color` | `"black"` | Boundary line color |
+### Composing subplots with `plot_on_axis!` (L1) / `figure_publication` (L2)
+
+Beyond `savefig_publication` (L3) shown above, the two lower layers let you
+compose and tweak figures (see the layer table at the top of this section).
+
+**L1 — compose multiple results into one figure** (e.g. a 2×2 poster panel).
+You create the figure with matplotlib's `subplots`/`add_subplot` and own the
+`close`:
+
+```julia
+using OpenCALPHAD, PythonPlot
+
+fig = PythonPlot.figure(figsize = (10, 8))
+OpenCALPHAD.plot_on_axis!(fig.add_subplot(2, 2, 1), grid_result)
+OpenCALPHAD.plot_on_axis!(fig.add_subplot(2, 2, 2), step_result; kind = :gibbs)
+OpenCALPHAD.plot_on_axis!(fig.add_subplot(2, 2, 3), step_result; kind = :phase_fraction)
+OpenCALPHAD.plot_on_axis!(fig.add_subplot(2, 2, 4), pd_result)
+fig.savefig("composite.pdf")
+PythonPlot.close(fig)            # caller owns the figure
+```
+
+The plot keyword arguments for each result type are the same as for `savefig_publication`
+(e.g. `title`, `color`, `show_minimum`, `kind`); `plot_on_axis!` returns the
+same `ax` for chaining.
+
+**L2 — adjust before saving:**
+
+```julia
+fig, ax = OpenCALPHAD.figure_publication(grid_result; axis_width_mm = 100.0)
+ax.axvline(0.5; linestyle = "--")     # add your own annotations
+fig.savefig("annotated.pdf")
+PythonPlot.close(fig)
+```
+
+> Note: inside the extension, figures are created with `PythonPlot.figure(...)`
+> (not `subplots()`), but on the **caller** side `subplots()` is fine — you just
+> own the resulting figure and must `close` it yourself.
 
 ### Installing PythonPlot
 

@@ -4,6 +4,12 @@
 
 using Documenter
 using OpenCALPHAD
+using PythonPlot                   # loads OpenCALPHADPythonPlotExt so its docstrings render
+PythonPlot.matplotlib.use("Agg")  # headless backend for CI / @example figures
+
+# The PythonPlot extension carries the docstrings for plot_on_axis! /
+# figure_publication / savefig_publication; include it so @docs can render them.
+const OCPythonPlotExt = Base.get_extension(OpenCALPHAD, :OpenCALPHADPythonPlotExt)
 
 makedocs(
     sitename = "OpenCALPHAD.jl",
@@ -12,7 +18,7 @@ makedocs(
     format = Documenter.HTML(
         prettyurls = get(ENV, "CI", nothing) == "true",
     ),
-    modules = [OpenCALPHAD],
+    modules = [OpenCALPHAD, OCPythonPlotExt],
     checkdocs = :exports,
     warnonly = [:missing_docs, :cross_references],
     pages = [
