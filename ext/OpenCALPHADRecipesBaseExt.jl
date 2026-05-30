@@ -1,6 +1,5 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-# Copyright (C) 2012-2026 Bo Sundman and OpenCALPHAD contributors
-# Copyright (C) 2026 Hiroharu Sugawara (Julia port)
+# Copyright (C) 2026 Hiroharu Sugawara
 # Part of OpenCALPHAD.jl - RecipesBase extension
 
 module OpenCALPHADRecipesBaseExt

@@ -21,7 +21,6 @@ OpenCALPHADPythonPlotExt = "PythonPlot"
 OpenCALPHADRecipesBaseExt = "RecipesBase"
 
 [compat]
-Aqua = "0.8"
 DifferentiationInterface = "0.7.14"
 ForwardDiff = "0.10"
 LinearAlgebra = "1"
@@ -30,12 +29,4 @@ Printf = "1"
 PythonPlot = "1"
 RecipesBase = "1"
 StaticArrays = "1"
-Test = "1"
 julia = "1.9"
-
-[extras]
-Aqua = "4c88cf16-eb10-579e-8560-4a9242c79595"
-Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
-
-[targets]
-test = ["Aqua", "Test"]
