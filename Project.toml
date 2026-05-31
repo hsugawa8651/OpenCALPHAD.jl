@@ -1,7 +1,7 @@
 name = "OpenCALPHAD"
 uuid = "f22b17f6-ccb9-4067-ab50-5d8cfb3cb77d"
 authors = ["Hiroharu Sugawara <hsugawa@gmail.com>"]
-version = "0.2.1"
+version = "0.2.2"
 
 [deps]
 DifferentiationInterface = "a0c0ee7d-e4b9-4e03-894e-1c5f64a51d63"
