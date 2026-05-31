@@ -137,7 +137,7 @@ export get_julia_endmembers, get_julia_interactions
 export validate_ad_compatibility
 
 # Exports - Phase Field integration
-export driving_force, chemical_potential, diffusion_potential
+export driving_force, gibbs_energy, chemical_potential, diffusion_potential
 export phase_field_params
 
 # Exports - Version info

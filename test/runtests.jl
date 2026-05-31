@@ -585,6 +585,20 @@ using Aqua
         end
     end
 
+    @testset "Phase field coupling: gibbs_energy" begin
+        agcu_path = joinpath(@__DIR__, "..", "reftest", "tdb", "agcu.TDB")
+        db = read_tdb(agcu_path)
+        fcc = get_phase(db, "FCC_A1")
+        liquid = get_phase(db, "LIQUID")
+        T, x = 1000.0, 0.3
+
+        @test isfinite(gibbs_energy(fcc, T, x, db))
+        @test isfinite(gibbs_energy(liquid, T, x, db))
+        # gibbs_energy must agree with the driving_force path (same internals)
+        ΔG = driving_force(db, T, x, "FCC_A1", "LIQUID")
+        @test gibbs_energy(fcc, T, x, db) - gibbs_energy(liquid, T, x, db) ≈ ΔG
+    end
+
     # Multi-component support tests (Cr-Mo from steel1.TDB)
     include("multicomponent.jl")
 

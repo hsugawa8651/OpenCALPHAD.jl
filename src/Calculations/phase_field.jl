@@ -51,6 +51,39 @@ function driving_force(
 end
 
 """
+    gibbs_energy(phase, T, x, db; P=1e5) -> Float64
+
+Molar Gibbs energy of a binary phase at mole fraction `x`.
+
+Composition based companion to [`calculate_gibbs_energy`](@ref) (which takes
+site fractions), matching the `x` based phase field coupling API
+(`driving_force`, `chemical_potential`, `diffusion_potential`).
+
+# Arguments
+
+  - `phase::Phase`: Phase object
+  - `T::Real`: Temperature [K]
+  - `x::Real`: Mole fraction of second component (0 to 1)
+  - `db::Database`: Database
+  - `P::Real`: Pressure [Pa]
+
+# Returns
+
+  - G [J/mol]
+
+# Example
+
+```julia
+fcc = get_phase(db, "FCC_A1")
+G = gibbs_energy(fcc, 1000.0, 0.3, db)
+```
+"""
+function gibbs_energy(phase::Phase, T::Real, x::Real, db::Database; P::Real = 1e5)
+    y = _composition_to_site_fractions(phase, x)
+    return calculate_gibbs_energy(phase, T, y, db; P = P)
+end
+
+"""
     chemical_potential(phase, T, x, db; P=1e5) -> Tuple{Float64, Float64}
 
 Calculate chemical potentials of both components.
