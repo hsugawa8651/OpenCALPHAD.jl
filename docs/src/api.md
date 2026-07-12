@@ -133,8 +133,21 @@ add_phase!
 
 Utility functions for coupling with phase field simulations.
 
+### Name clashes with PhaseFields.jl
+
+Both packages export `chemical_potential` and `savefig_publication`.
+In each case the two are separate generic functions rather than one shared
+generic, so Julia refuses to merge them and an unqualified call under
+`using PhaseFields, OpenCALPHAD` is an ambiguous binding.
+
+Their methods dispatch on disjoint argument types, so qualifying the call
+resolves it and each function behaves as documented.
+Write `OpenCALPHAD.chemical_potential(...)` or
+`PhaseFields.chemical_potential(...)`, and likewise for `savefig_publication`.
+
 ```@docs
 driving_force
+gibbs_energy
 chemical_potential
 diffusion_potential
 phase_field_params
